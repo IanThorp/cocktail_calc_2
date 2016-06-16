@@ -1,0 +1,28 @@
+<div class="container">
+	<div id="ingredientModule" class="col-md-4 col-md-offset-2">
+		<h2>Ingredients</h2>
+		<input placeholder="Ingredient Name" type="text">
+		<button id="addIngredient">Add Ingredient</button>
+		<ul id="ingredients">
+			<li> test </li>
+			<script id="ingredient-template" type="text/x-handlebars-template">
+			{{#each this}}
+				<li>
+					<span>{{name}}</span>
+					<i class="del">X</i>
+				</li>
+			{{/each}}
+			</script>
+		</ul>
+	</div>
+</div>
+
+<script>
+(function(){
+	var ingredients = [{name: 'campari'}, {name: 'Averna'}]
+	var template = Handlebars.compile( $('#ingredient-template').html(), ingredients );
+	console.log(template)
+	var temp = template(ingredients);
+	console.log(temp);
+})();
+</script>
