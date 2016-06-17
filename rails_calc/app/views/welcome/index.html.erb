@@ -17,12 +17,56 @@
 	</div>
 </div>
 
-<script>
+<!-- <script>
 (function(){
 	var ingredients = [{name: 'campari'}, {name: 'Averna'}]
 	var template = Handlebars.compile( $('#ingredient-template').html(), ingredients );
-	console.log(template)
+	// console.log(template)
 	var temp = template(ingredients);
-	console.log(temp);
+	// console.log(temp);
 })();
+</script> -->
+<script type="text/javascript">
+	(function() {
+	var ingredients = {
+		ingredients: [{name: 'Campari'}, {name: 'Averna'}],
+		init: function(){
+			this.cacheDom();
+			this.bindEvents();
+			this.render();
+		},
+		cacheDom: function() {
+			this.$el = $('#ingredientModule');
+			this.$button = this.$el.find('button');
+			this.$input = this.$el.find('input');
+			this.$ul = this.$el.find('ul');
+			this.template = this.$el.find('#ingredient-template');
+		},
+		bindEvents: function() {
+			this.$button.on('click', this.addIngredient.bind(this));
+			this.$ul.delegate('i.del', 'click', this.deleteIngredient.bind(this))
+		},
+		render: function() {
+			var data = {
+				names: this.ingredients
+			};
+			this.$ul.html(Handlebars.compile(this.template, data.names)());
+		},
+		addIngredient: function() {
+			this.names.push(this.$input.val());
+			this.render();
+			this.$input.val('');
+		},
+		deleteIngredient: function(event) {
+			var $remove = $(event.target).closest('li');
+			var i = this.$ul.find('li').index($remove);
+			this.names.splice(i, 1);
+			this.render();
+		}
+
+	};
+
+	ingredients.init();
+
+}())
 </script>
