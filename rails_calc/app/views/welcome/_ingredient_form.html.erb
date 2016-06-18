@@ -1,4 +1,4 @@
-<%= text_field_tag "ingredients[][name]"%>
-<%= text_field_tag "ingredients[][abv]"%>
-<%= text_field_tag "ingredients[][volume]"%>
-<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']])%>
+<%= text_field_tag "ingredients[][name]", nil, class: 'name-col'%>
+<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col'%>
+<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col'%>
+<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>

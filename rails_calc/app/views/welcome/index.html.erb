@@ -10,11 +10,11 @@
 				</li>
 
 			<div class="additionalIngredients">
-				<%= form_tag "/recipes" do%>
+				<%= form_tag "/recipe", remote: true, method: 'GET' do%>
 					<% 3.times do%>
 						<%= render 'ingredient_form' %>
 					<%end%>
-					<%= submit_tag 'Calculate'>
+					<%=submit_tag "Calculate", class: "btn btn-primary calculateButton"%>
 				<%end%>
 
 			</div>
@@ -60,20 +60,4 @@
 	</div>
 </div>
 
-<!-- 				<script id="ingredient-template" type="text/x-handlebars-template">
-				{{#ingredients}}
-					<li>
-						<input class="name-col" name="name" {{#if name}}value={{name}}{{/if}} type="text">
-						<input class="abv-col" name="abv" {{#if abv}}value={{abv}}{{/if}} type="text">
-						<input class="volume-col" name="volume" {{#if volume}}value={{volume}}{{/if}} type="text">
-						<select class="unit-col" name="unit">
-						    <option value="floz" {{#if floz}}selected="selected"{{/if}}>fl oz</option>
-						    <option value="ml" {{#if ml}}selected="selected"{{/if}}>ml</option>
-						    <option value="dash" {{#if dash}}selected="selected"{{/if}}>dash</option>
-						    <option value="drop" {{#if drop}}selected="selected"{{/if}}>drop</option>
-						 </select> 
-						<button class="del btn btn-danger">X</button>
-					</li>
-				{{/ingredients}}
-				</script> -->
 
