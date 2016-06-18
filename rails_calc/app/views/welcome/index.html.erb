@@ -1,72 +1,79 @@
-<div class="container">
-	<div id="ingredientModule" class="col-md-4 col-md-offset-2">
-		<h2>Ingredients</h2>
-		<input placeholder="Ingredient Name" type="text">
-		<button id="addIngredient">Add Ingredient</button>
+<div class="container-fluid">
+	<div id="ingredientModule" class="col-md-6 border">
+		<h2 class="ingredientsModuleTitle">Ingredients</h2>
 		<ul id="ingredients">
-			<li> test </li>
-			<script id="ingredient-template" type="text/x-handlebars-template">
-			{{#each this}}
-				<li>
-					<span>{{name}}</span>
-					<i class="del">X</i>
+				<li class=ingredientsHeader>
+					<h3 class="name-col">Name</h3>
+					<h3 class="abv-col">ABV</h3>
+					<h3 class="volume-col">Volume</h3>
+					<h3 class="unit-col">Unit</h3>
 				</li>
-			{{/each}}
-			</script>
+
+			<div class="additionalIngredients">
+				<%= form_tag "/recipes" do%>
+					<% 3.times do%>
+						<%= render 'ingredient_form' %>
+					<%end%>
+					<%= submit_tag 'Calculate'>
+				<%end%>
+
+			</div>
+
+			<button class="btn btn-success" id="addIngredientButton">+</button>
 		</ul>
+
+		<div class="ingredientsOptions">
+		    <label class="radio-inline">
+		      	<input type="radio" name="buildMethod">Stirred
+		    </label>
+		    <label class="radio-inline">
+		      	<input type="radio" name="buildMethod">Shaken
+		    </label>
+		    <label class="radio-inline">
+		      	<input type="radio" name="buildMethod">Built
+		    </label>
+		    <label class="radio-inline">
+		      	<input type="radio" name="buildMethod">Carbonated
+		    </label>
+			<label class="checkbox-inline autoDiluteCheck">
+				<input type="checkbox" name="autoDilute">Auto-Dilute
+			</label>		
+		</div>
+
+		<div class="ingredientsControls">
+			<button class="btn btn-primary resetButton">
+				Reset
+			</button>
+			<button class="btn btn-primary calculateButton">
+				Calculate
+			</button>
+		</div> 
+	</div>
+	<div id="statsModule" class="col-md-6 border">
+		<h1>Stats</h1>
+	</div>
+	<div id="batchesModule" class="col-md-6 border">
+		<h1>Batches</h1>
+	</div>
+	<div id="recipeModule" class="col-md-6 border">
+		<h1>Recipe</h1>
 	</div>
 </div>
 
-<!-- <script>
-(function(){
-	var ingredients = [{name: 'campari'}, {name: 'Averna'}]
-	var template = Handlebars.compile( $('#ingredient-template').html(), ingredients );
-	// console.log(template)
-	var temp = template(ingredients);
-	// console.log(temp);
-})();
-</script> -->
-<script type="text/javascript">
-	(function() {
-	var ingredients = {
-		ingredients: [{name: 'Campari'}, {name: 'Averna'}],
-		init: function(){
-			this.cacheDom();
-			this.bindEvents();
-			this.render();
-		},
-		cacheDom: function() {
-			this.$el = $('#ingredientModule');
-			this.$button = this.$el.find('button');
-			this.$input = this.$el.find('input');
-			this.$ul = this.$el.find('ul');
-			this.template = this.$el.find('#ingredient-template');
-		},
-		bindEvents: function() {
-			this.$button.on('click', this.addIngredient.bind(this));
-			this.$ul.delegate('i.del', 'click', this.deleteIngredient.bind(this))
-		},
-		render: function() {
-			var data = {
-				names: this.ingredients
-			};
-			this.$ul.html(Handlebars.compile(this.template, data.names)());
-		},
-		addIngredient: function() {
-			this.names.push(this.$input.val());
-			this.render();
-			this.$input.val('');
-		},
-		deleteIngredient: function(event) {
-			var $remove = $(event.target).closest('li');
-			var i = this.$ul.find('li').index($remove);
-			this.names.splice(i, 1);
-			this.render();
-		}
+<!-- 				<script id="ingredient-template" type="text/x-handlebars-template">
+				{{#ingredients}}
+					<li>
+						<input class="name-col" name="name" {{#if name}}value={{name}}{{/if}} type="text">
+						<input class="abv-col" name="abv" {{#if abv}}value={{abv}}{{/if}} type="text">
+						<input class="volume-col" name="volume" {{#if volume}}value={{volume}}{{/if}} type="text">
+						<select class="unit-col" name="unit">
+						    <option value="floz" {{#if floz}}selected="selected"{{/if}}>fl oz</option>
+						    <option value="ml" {{#if ml}}selected="selected"{{/if}}>ml</option>
+						    <option value="dash" {{#if dash}}selected="selected"{{/if}}>dash</option>
+						    <option value="drop" {{#if drop}}selected="selected"{{/if}}>drop</option>
+						 </select> 
+						<button class="del btn btn-danger">X</button>
+					</li>
+				{{/ingredients}}
+				</script> -->
 
-	};
-
-	ingredients.init();
-
-}())
-</script>

@@ -1,3 +1,60 @@
 // Place all the styles related to the welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/*HEADER*/
+.border {
+	border: 1px solid black;
+}
+
+/*INGREDIENT MODULE*/
+.ingredientsModuleTitle {
+	text-align: center;
+}
+
+.ingredientsHeader h3{
+	display: inline-block;
+}
+
+#ingredients {
+	list-style: none;
+}
+
+#ingredients li {
+	background-color: red;
+}
+
+.name-col {
+	width: 30%;
+	background-color: pink;
+
+}
+
+.abv-col {
+	width: 15%;
+	background-color: green;
+}
+
+.volume-col {
+	width: 15%;
+	background-color: yellow;
+}
+
+.unit-col {
+	width: 15%;
+	background-color: orange;
+}
+
+.autoDiluteCheck {
+	background-color: lightgrey;
+	margin-left: 5px;
+	border-left: 1px solid black;
+}
+
+.ingredientsOptions {
+	text-align: center;
+}
+
+.ingredientsControls {
+	text-align: center;
+}

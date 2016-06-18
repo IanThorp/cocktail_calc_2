@@ -1,6 +1,14 @@
-(function() {
+$(document).ready(function(){
+	ingredientModule();
+	statsModule();
+})
+
+
+var ingredientModule = function() {
 	var ingredients = {
-		ingredients: [{name: 'Campari'}, {name: 'Averna'}],
+		minimumRows: 3,
+		blankIngredient: {name: null, volume: null, unit: null, abv: null},
+		ingredients: [{name: 'Campari', volume: '8', unit: 'floz', abv: '20' }, {name: 'Averna', volume: '9', unit: 'ml', abv: '25'}],
 		init: function(){
 			this.cacheDom();
 			this.bindEvents();
@@ -8,35 +16,60 @@
 		},
 		cacheDom: function() {
 			this.$el = $('#ingredientModule');
-			this.$button = this.$el.find('button');
-			this.$input = this.$el.find('input');
-			this.$ul = this.$el.find('ul');
-			this.template = this.$el.find('#ingredient-template');
+			this.$addIngredientButton = this.$el.find('#addIngredientButton');
+			this.$resetButton = this.$el.find('.resetButton')
+			this.$additionalIngredients = this.$el.find('.additionalIngredients');
+			this.template = this.$el.find('#ingredient-template').html();
 		},
 		bindEvents: function() {
-			this.$button.on('click', this.addIngredient.bind(this));
-			this.$ul.delegate('i.del', 'click', this.deleteIngredient.bind(this))
+			this.$addIngredientButton.on('click', this.addIngredient.bind(this));
+			this.$additionalIngredients.delegate('.del', 'click', this.deleteIngredient.bind(this))
+			this.$resetButton.on('click', this.resetIngredients.bind(this));
+			this.$calculateButton.on('click', this.calculateRecipe.bind(this));
 		},
 		render: function() {
 			var data = {
-				names: this.ingredientNames
+				ingredients: this.ingredients
 			};
-			this.$ul.html(Handlebars.compile('<h1>{{name}} howdy<h1>', data.names)());
+			this.$additionalIngredients.html(Handlebars.compile(this.template)(data));
 		},
 		addIngredient: function() {
-			this.names.push(this.$input.val());
+			this.ingredients.push(this.blankIngredient);
 			this.render();
-			this.$input.val('');
 		},
 		deleteIngredient: function(event) {
 			var $remove = $(event.target).closest('li');
-			var i = this.$ul.find('li').index($remove);
-			this.names.splice(i, 1);
+			var i = this.$additionalIngredients.find('li').index($remove);
+			this.ingredients.splice(i, 1);
 			this.render();
+		},
+		resetIngredients: function() {
+			this.ingredients = []
+			this.createMinNumRows(this.minimumRows);
+		},
+		createMinNumRows: function(minimum) {
+			for(var i = this.ingredients.length; i < minimum; i++){
+				this.addIngredient();
+			}
+		},
+		calculateRecipe: function(){
+			var stats = {}
+			this.ingredients = this.getIngredientsSpecs();
+			$.each(this.ingredients, function(){
+				stats.initialAbv 
+			})
+		},
+		getIngredientsSpecs: function(){
+			this.$ingredients = $('.additionalIngredients')
+			this.$ingredients.find()
 		}
-
 	};
 
 	ingredients.init();
+}
 
-}())
+var statsModule = function(){
+	var stats = {
+
+	}
+}
