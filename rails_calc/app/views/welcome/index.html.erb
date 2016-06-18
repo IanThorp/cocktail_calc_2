@@ -11,10 +11,21 @@
 
 			<div class="additionalIngredients">
 				<%= form_tag "/recipe", remote: true, method: 'GET' do%>
+					<%= text_field_tag "recipe[name]", nil, class: "recipeName" %>
 					<% 3.times do%>
 						<%= render 'ingredient_form' %>
 					<%end%>
-					<%=submit_tag "Calculate", class: "btn btn-primary calculateButton"%>
+					<div class="ingredientsOptions">
+						<%= radio_button_tag "recipe[method]", "stirred", class: "radio-inline" %>
+						<%= label_tag "stirred", "Stirred" %>
+						<%= radio_button_tag "recipe[method]", "shaken", class: "radio-inline" %>
+						<%= label_tag "shaken", "Shaken" %>
+						<%= radio_button_tag "recipe[method]", "built", class: "radio-inline" %>
+						<%= label_tag "built", "Built" %>
+						<%= radio_button_tag "recipe[method]", "carbonated", class: "radio-inline" %>
+						<%= label_tag "carbonated", "Carbonated" %>
+						<%=submit_tag "Calculate", class: "btn btn-primary calculateButton"%>
+					</div>
 				<%end%>
 
 			</div>
