@@ -22,9 +22,9 @@ var ingredientModule = function() {
 		},
 
 		bindEvents: function() {
-			this.$addIngredientButton.on("click", this.addIngredientRow.bind(this));
-			this.$recipeForm.on("ajax:success", this.submitRecipe.bind(this));
-			this.$recipeForm.on("ajax:error", this.ajaxError.bind(this));
+			this.$addIngredientButton.on('click', this.addIngredientRow.bind(this));
+			this.$recipeForm.on('ajax:success', this.submitRecipe.bind(this));
+			this.$recipeForm.on('ajax:error', this.ajaxError.bind(this));
 			this.$el.delegate('.deleteIngredientButton', 'click', this.deleteIngredient.bind(this));
 		},
 

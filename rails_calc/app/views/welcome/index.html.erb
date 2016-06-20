@@ -10,7 +10,7 @@
 				</li>
 
 			
-				<%= form_tag "/recipes", class:"new_recipe", remote: true, method: 'POST' do%>
+				<%= form_tag "/recipes/calculate", class:"new_recipe", remote: true, method: 'GET' do%>
 				<div class="additionalIngredients">
 					<script id="ingredient-template" type="text/template">
 						<li>
@@ -36,7 +36,7 @@
 						<%= label_tag "built", "Built" %>
 						<%= radio_button_tag "recipe[method]", "carbonated", class: "radio-inline" %>
 						<%= label_tag "carbonated", "Carbonated" %>
-						<%= check_box_tag "recipe[autoDilute]", "true", false %>
+						<%= check_box_tag "recipe[autoDilute]", true, false %>
 						<%= label_tag "autoDilute", "AutoDilute" %>
 						<div class="recipeButtons">
 							<button class="btn btn-success" id="addIngredientButton">New Row</button>
