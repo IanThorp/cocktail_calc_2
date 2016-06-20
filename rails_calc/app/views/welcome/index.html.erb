@@ -1,0 +1,64 @@
+<div class="container-fluid">
+	<div id="ingredientModule" class="col-md-6 border">
+		<h2 class="ingredientsModuleTitle">Ingredients</h2>
+		<ul id="ingredients">
+				<li class=ingredientsHeader>
+					<h3 class="name-col">Name</h3>
+					<h3 class="abv-col">ABV</h3>
+					<h3 class="volume-col">Volume</h3>
+					<h3 class="unit-col">Unit</h3>
+				</li>
+
+			
+				<%= form_tag "/recipes/calculate", class:"new_recipe", remote: true, method: 'GET' do%>
+				<div class="additionalIngredients">
+					<script id="ingredient-template" type="text/template">
+						<li>
+							<%= text_field_tag "ingredients[][name]", nil, class: 'name-col'%>
+							<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col'%>
+							<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col'%>
+							<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
+							<button class="deleteIngredientButton btn btn-danger btn-sm">X</button>
+						</li>	
+					</script>
+					<div class="ingredientEntries">
+						<% @num_rows.times do%>
+							<%= render 'ingredient_form' %>
+						<%end%>
+					</div>
+					<div class="ingredientsOptions">
+						<%= text_field_tag "recipe[name]", nil, class: "recipeName", placeholder: "Recipe Name" %>
+						<%= radio_button_tag "recipe[method]", "stirred", class: "radio-inline" %>
+						<%= label_tag "stirred", "Stirred" %>
+						<%= radio_button_tag "recipe[method]", "shaken", class: "radio-inline" %>
+						<%= label_tag "shaken", "Shaken" %>
+						<%= radio_button_tag "recipe[method]", "built", class: "radio-inline" %>
+						<%= label_tag "built", "Built" %>
+						<%= radio_button_tag "recipe[method]", "carbonated", class: "radio-inline" %>
+						<%= label_tag "carbonated", "Carbonated" %>
+						<%= check_box_tag "recipe[autoDilute]", true, false %>
+						<%= label_tag "autoDilute", "AutoDilute" %>
+						<div class="recipeButtons">
+							<button class="btn btn-success" id="addIngredientButton">New Row</button>
+							<%= submit_tag "Calculate", class: "btn btn-primary calculateButton" %>
+						</div>
+					</div>
+				<%end%>
+				
+
+			</div>
+		</ul>
+
+	</div>
+	<div id="statsModule" class="col-md-6 border">
+		<h1>Stats</h1>
+	</div>
+	<div id="batchesModule" class="col-md-6 border">
+		<h1>Batches</h1>
+	</div>
+	<div id="recipeModule" class="col-md-6 border">
+		<h1>Recipe</h1>
+	</div>
+</div>
+
+

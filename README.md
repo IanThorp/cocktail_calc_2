@@ -1,2 +1,2 @@
 # cocktail_calc_2
-Update Version of Cocktail Calculator
+This is an update release of the Cocktail Calculator Web Page
