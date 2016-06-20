@@ -1,4 +1,7 @@
-<%= text_field_tag "ingredients[][name]", nil, class: 'name-col'%>
-<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col'%>
-<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col'%>
-<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
+<li>
+	<%= text_field_tag "ingredients[][name]", nil, class: 'name-col'%>
+	<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col'%>
+	<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col'%>
+	<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
+	<button class="deleteIngredientButton delete-col btn btn-danger btn-sm">X</button>
+</li>

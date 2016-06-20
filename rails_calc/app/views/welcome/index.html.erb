@@ -9,13 +9,25 @@
 					<h3 class="unit-col">Unit</h3>
 				</li>
 
-			<div class="additionalIngredients">
-				<%= form_tag "/recipe", remote: true, method: 'GET' do%>
-					<%= text_field_tag "recipe[name]", nil, class: "recipeName" %>
-					<% 3.times do%>
-						<%= render 'ingredient_form' %>
-					<%end%>
+			
+				<%= form_tag "/recipes", class:"new_recipe", remote: true, method: 'POST' do%>
+				<div class="additionalIngredients">
+					<script id="ingredient-template" type="text/template">
+						<li>
+							<%= text_field_tag "ingredients[][name]", nil, class: 'name-col'%>
+							<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col'%>
+							<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col'%>
+							<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
+							<button class="deleteIngredientButton btn btn-danger btn-sm">X</button>
+						</li>	
+					</script>
+					<div class="ingredientEntries">
+						<% @num_rows.times do%>
+							<%= render 'ingredient_form' %>
+						<%end%>
+					</div>
 					<div class="ingredientsOptions">
+						<%= text_field_tag "recipe[name]", nil, class: "recipeName", placeholder: "Recipe Name" %>
 						<%= radio_button_tag "recipe[method]", "stirred", class: "radio-inline" %>
 						<%= label_tag "stirred", "Stirred" %>
 						<%= radio_button_tag "recipe[method]", "shaken", class: "radio-inline" %>
@@ -24,41 +36,19 @@
 						<%= label_tag "built", "Built" %>
 						<%= radio_button_tag "recipe[method]", "carbonated", class: "radio-inline" %>
 						<%= label_tag "carbonated", "Carbonated" %>
-						<%=submit_tag "Calculate", class: "btn btn-primary calculateButton"%>
+						<%= check_box_tag "recipe[autoDilute]", "true", false %>
+						<%= label_tag "autoDilute", "AutoDilute" %>
+						<div class="recipeButtons">
+							<button class="btn btn-success" id="addIngredientButton">New Row</button>
+							<%= submit_tag "Calculate", class: "btn btn-primary calculateButton" %>
+						</div>
 					</div>
 				<%end%>
+				
 
 			</div>
-
-			<button class="btn btn-success" id="addIngredientButton">+</button>
 		</ul>
 
-		<div class="ingredientsOptions">
-		    <label class="radio-inline">
-		      	<input type="radio" name="buildMethod">Stirred
-		    </label>
-		    <label class="radio-inline">
-		      	<input type="radio" name="buildMethod">Shaken
-		    </label>
-		    <label class="radio-inline">
-		      	<input type="radio" name="buildMethod">Built
-		    </label>
-		    <label class="radio-inline">
-		      	<input type="radio" name="buildMethod">Carbonated
-		    </label>
-			<label class="checkbox-inline autoDiluteCheck">
-				<input type="checkbox" name="autoDilute">Auto-Dilute
-			</label>		
-		</div>
-
-		<div class="ingredientsControls">
-			<button class="btn btn-primary resetButton">
-				Reset
-			</button>
-			<button class="btn btn-primary calculateButton">
-				Calculate
-			</button>
-		</div> 
 	</div>
 	<div id="statsModule" class="col-md-6 border">
 		<h1>Stats</h1>
