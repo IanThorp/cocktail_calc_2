@@ -25,8 +25,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
 gem 'normalize-rails'
 gem 'bootstrap-sass'
-gem 'mustache'
-gem 'handlebars_assets'
 
 
 # Use ActiveModel has_secure_password

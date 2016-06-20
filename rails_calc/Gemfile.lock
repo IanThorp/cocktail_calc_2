@@ -66,11 +66,6 @@ GEM
     execjs (2.7.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
-    handlebars_assets (0.23.0)
-      execjs (~> 2.0)
-      multi_json (~> 1.0)
-      sprockets (>= 2.0.0)
-      tilt (>= 1.2)
     i18n (0.7.0)
     jbuilder (2.5.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -90,7 +85,6 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.9.0)
     multi_json (1.12.1)
-    mustache (1.0.3)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -173,10 +167,8 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   devise
-  handlebars_assets
   jbuilder (~> 2.0)
   jquery-rails
-  mustache
   normalize-rails
   pg (~> 0.15)
   rails (= 4.2.6)
