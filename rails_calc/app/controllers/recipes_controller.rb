@@ -20,9 +20,23 @@ class RecipesController < ApplicationController
 
 	def calculate
 		data = { recipe: params[:recipe], ingredients: params[:ingredients] }
+		data[:recipe][:initial_volume] = 0
+		data[:recipe][:initial_alcohol_volume] = 0
+
 		data[:ingredients].each do |ingredient|
 			ingredient[:volume_ml] = volume_to_ml(ingredient)
+			data[:recipe][:initial_volume] += ingredient[:volume]
+			data[:recipe][:initial_alcohol_volume] += ingredient[:volume].to_i * ingredient[:abv].to_i/100
 		end
+
+		data[:recipe][:initial_abv] = data[:recipe][:initial_alcohol_volume]/data[:recipe][:initial_volume]
+
+		if data[:recipe][:autoDilute]
+			data[:recipe][:dilution] = dilute(data[:recipe])
+		else
+			data[:recipe][:dilution] = 0
+		end
+
 		respond_to do |format|
 			format.json {render json: data}
 			format.html
@@ -45,5 +59,16 @@ class RecipesController < ApplicationController
 			volume_ml = ingredient[:volume]
 		end
 		volume_ml
+	end
+
+	def dilute(recipe)
+		case recipe[:method]
+		when "stirred"
+			dilution = (recipe[:initial_abv] ** 2 * -1.21 + 1.246 * recipe[:initial_abv] + 0.145)
+		when "shaken"
+			dilution = 0
+		else
+			dilution = 0
+		end
 	end
 end
