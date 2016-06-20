@@ -11,7 +11,7 @@ class RecipesController < ApplicationController
 
 
 	def create
-		data = { recipe: params[:recipe], ingredients: params[:ingredients]}
+		data = { recipe: params[:recipe], ingredients: params[:ingredients] }
 		respond_to do |format|
 			format.json {render json: data}
 			format.html
@@ -19,11 +19,10 @@ class RecipesController < ApplicationController
 	end
 
 	def calculate
-		data = { recipe: params[:recipe], ingredients: params[:ingredients]}
+		data = { recipe: params[:recipe], ingredients: params[:ingredients] }
 		data[:ingredients].each do |ingredient|
 			ingredient[:volume_ml] = volume_to_ml(ingredient)
 		end
-
 		respond_to do |format|
 			format.json {render json: data}
 			format.html
