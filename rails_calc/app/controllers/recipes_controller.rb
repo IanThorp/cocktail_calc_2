@@ -1,8 +1,6 @@
 class RecipesController < ApplicationController
 
 	def index
-		p params
-		p "hit index route recipes"
 		respond_to do |format|
 			format.json {render json: params}
 			format.html 
@@ -19,27 +17,27 @@ class RecipesController < ApplicationController
 	end
 
 	def calculate
-		data = { recipe: params[:recipe], ingredients: params[:ingredients] }
+		data = { 
+			recipe: params[:recipe], 
+			ingredients: params[:ingredients] 
+		}
 		data[:recipe][:initial_volume] = 0
 		data[:recipe][:initial_alcohol_volume] = 0
 
 		data[:ingredients].each do |ingredient|
 			ingredient[:volume_ml] = volume_to_ml(ingredient)
-			data[:recipe][:initial_volume] += ingredient[:volume]
-			data[:recipe][:initial_alcohol_volume] += ingredient[:volume].to_i * ingredient[:abv].to_i/100
+			data[:recipe][:initial_volume] += ingredient[:volume_ml]
+			data[:recipe][:initial_alcohol_volume] += (ingredient[:volume_ml].to_f * (ingredient[:abv].to_f/100)).round(3)
 		end
 
-		data[:recipe][:initial_abv] = data[:recipe][:initial_alcohol_volume]/data[:recipe][:initial_volume]
+		data[:recipe][:initial_abv] = (data[:recipe][:initial_alcohol_volume]/data[:recipe][:initial_volume]).round(4)
 
-		if data[:recipe][:autoDilute]
-			data[:recipe][:dilution] = dilute(data[:recipe])
-		else
-			data[:recipe][:dilution] = 0
-		end
+		data[:recipe][:dilution] = dilute(data[:recipe])
+
 
 		respond_to do |format|
 			format.json {render json: data}
-			format.html
+			format.html 
 		end
 	end
 
@@ -62,13 +60,18 @@ class RecipesController < ApplicationController
 	end
 
 	def dilute(recipe)
-		case recipe[:method]
-		when "stirred"
-			dilution = (recipe[:initial_abv] ** 2 * -1.21 + 1.246 * recipe[:initial_abv] + 0.145)
-		when "shaken"
-			dilution = 0
+		if recipe[:autoDilute]
+			case recipe[:method]
+			when "stirred"
+				dilution = (recipe[:initial_abv] ** 2 * -1.21 + 1.246 * recipe[:initial_abv] + 0.145).round(3)
+			when "shaken"
+				dilution = (recipe[:initial_abv] ** 2 * -1.567 + 1.742 * recipe[:initial_abv] + 0.203).round(3)
+			else
+				dilution = 0
+			end
 		else
 			dilution = 0
 		end
+		(dilution * recipe[:initial_volume]).round(2)
 	end
 end
