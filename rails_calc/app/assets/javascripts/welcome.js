@@ -5,26 +5,25 @@ $(document).ready(function(){
 
 var ingredientModule = function() {
 	var ingredients = {
-		ingredients: [],
 		init: function(){
 			this.cacheDom();
 			this.bindEvents();
 		},
 
 		cacheDom: function() {
-			this.$el = $('#ingredientModule');
-			this.$recipeForm = this.$el.find('.new_recipe');
-			this.$calculateButton = this.$el.find('.calculateButton');
-			this.$ingredientEntries = this.$el.find('.ingredientEntries');
-			this.$addIngredientButton = this.$el.find('#addIngredientButton');
-			this.ingredientTemplate = this.$el.find('#ingredient-template').html();
+			this.$ul = $('#ingredientModule');
+			this.$recipeForm = this.$ul.find('.new_recipe');
+			this.$calculateButton = this.$ul.find('.calculateButton');
+			this.$ingredientEntries = this.$ul.find('.ingredientEntries');
+			this.$addIngredientButton = this.$ul.find('#addIngredientButton');
+			this.ingredientTemplate = this.$ul.find('#ingredient-template').html();
 		},
 
 		bindEvents: function() {
 			this.$addIngredientButton.on('click', this.addIngredientRow.bind(this));
 			this.$recipeForm.on('ajax:success', this.submitRecipe.bind(this));
 			this.$recipeForm.on('ajax:error', this.ajaxError.bind(this));
-			this.$el.delegate('.deleteIngredientButton', 'click', this.deleteIngredient.bind(this));
+			this.$ul.delegate('.deleteIngredientButton', 'click', this.deleteIngredient.bind(this));
 		},
 
 		submitRecipe: function(e, data) {
@@ -42,7 +41,7 @@ var ingredientModule = function() {
 
 		deleteIngredient: function(e) {
 			var $remove = $(e.target).closest('li');
-			var i = this.$el.find('li').index($remove);
+			var i = this.$ul.find('li').index($remove);
 
 			$remove.remove()
 		}
@@ -52,7 +51,13 @@ var ingredientModule = function() {
 
 var statsModule = function(){
 	var stats = {
+		init: function(){
+			this.bindEvents
+		},
 
+		bindEvents: function(){
+			
+		},
 	}
 }
 
