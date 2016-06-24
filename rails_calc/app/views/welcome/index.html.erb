@@ -26,6 +26,7 @@
 							<%= render 'ingredient_form' %>
 						<%end%>
 					</div>
+
 					<div class="ingredientsOptions">
 						<%= text_field_tag "recipe[name]", nil, class: "recipeName", placeholder: "Recipe Name" %>
 						<%= radio_button_tag "recipe[method]", "stirred", class: "radio-inline" %>
@@ -34,14 +35,13 @@
 						<%= label_tag "shaken", "Shaken" %>
 						<%= radio_button_tag "recipe[method]", "built", class: "radio-inline" %>
 						<%= label_tag "built", "Built" %>
-						<%= radio_button_tag "recipe[method]", "carbonated", class: "radio-inline" %>
-						<%= label_tag "carbonated", "Carbonated" %>
 						<%= check_box_tag "recipe[autoDilute]", true, false %>
 						<%= label_tag "autoDilute", "AutoDilute" %>
 						<div class="recipeButtons">
 							<button class="btn btn-success" id="addIngredientButton">New Row</button>
 							<%= submit_tag "Calculate", class: "btn btn-primary calculateButton" %>
 						</div>
+						
 					</div>
 				<%end%>
 				
@@ -52,6 +52,15 @@
 	</div>
 	<div id="statsModule" class="col-md-6 border">
 		<h1>Stats</h1>
+
+		<ul>
+			<li class="statsInitAbv">Initial ABV: </li>	
+			<li class="statsInitVolume">Initial Volume: </li>	
+			<li class="statsDilution">Dilution: </li>	
+			<li class="statsFinalAbv">Final ABV: </li>	
+			<li class="statsFinalVolume">Final Volume: </li>	
+		</ul>
+
 	</div>
 	<div id="batchesModule" class="col-md-6 border">
 		<h1>Batches</h1>

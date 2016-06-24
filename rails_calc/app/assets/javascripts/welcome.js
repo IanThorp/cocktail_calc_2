@@ -3,7 +3,6 @@ $(document).ready(function(){
 	statsModule();
 })
 
-
 var ingredientModule = function() {
 	var ingredients = {
 		ingredients: [],
@@ -48,8 +47,7 @@ var ingredientModule = function() {
 			$remove.remove()
 		}
 	}
-
-	ingredients.init();
+	ingredients.init()
 }
 
 var statsModule = function(){
