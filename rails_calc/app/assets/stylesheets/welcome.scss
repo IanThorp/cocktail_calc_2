@@ -7,10 +7,12 @@
 	border: 1px solid black;
 }
 
-/*INGREDIENT MODULE*/
-.ingredientsModuleTitle {
+/*PAGE BODY*/
+.moduleTitle {
 	text-align: center;
 }
+
+/*INGREDIENT MODULE*/
 
 .ingredientsHeader h3{
 	display: inline-block;
@@ -20,29 +22,21 @@
 	list-style: none;
 }
 
-#ingredients li {
-	background-color: red;
-}
-
 .name-col {
 	width: 30%;
-	background-color: pink;
 
 }
 
 .abv-col {
 	width: 15%;
-	background-color: green;
 }
 
 .volume-col {
 	width: 15%;
-	background-color: yellow;
 }
 
 .unit-col {
 	width: 15%;
-	background-color: orange;
 }
 
 .autoDiluteCheck {
@@ -57,4 +51,12 @@
 
 .recipeButtons {
 	text-align: center;
+}
+
+/*STATS MODULE*/
+
+#statsList {
+	list-style: none;
+	text-align: center;
+	margin-right: 100px;
 }

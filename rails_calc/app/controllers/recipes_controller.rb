@@ -31,9 +31,9 @@ class RecipesController < ApplicationController
 		end
 
 		data[:recipe][:initial_abv] = (data[:recipe][:initial_alcohol_volume]/data[:recipe][:initial_volume]).round(4)
-
 		data[:recipe][:dilution] = dilute(data[:recipe])
-
+		data[:recipe][:final_volume] = data[:recipe][:dilution] + data[:recipe][:initial_volume]
+		data[:recipe][:final_abv] = (data[:recipe][:initial_alcohol_volume]/data[:recipe][:final_volume]).round(4)
 
 		respond_to do |format|
 			format.json {render json: data}

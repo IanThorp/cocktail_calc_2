@@ -1,63 +1,103 @@
-$(document).ready(function(){
-	ingredientModule();
-	statsModule();
-})
+var ingredientModule = (function($) {
 
-var ingredientModule = function() {
-	var ingredients = {
-		init: function(){
-			this.cacheDom();
-			this.bindEvents();
-		},
+	var $ul ,$recipeForm ,$calculateButton ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate
 
-		cacheDom: function() {
-			this.$ul = $('#ingredientModule');
-			this.$recipeForm = this.$ul.find('.new_recipe');
-			this.$calculateButton = this.$ul.find('.calculateButton');
-			this.$ingredientEntries = this.$ul.find('.ingredientEntries');
-			this.$addIngredientButton = this.$ul.find('#addIngredientButton');
-			this.ingredientTemplate = this.$ul.find('#ingredient-template').html();
-		},
+	function init(){
+		cacheDom();
+		bindEvents();
+	}
 
-		bindEvents: function() {
-			this.$addIngredientButton.on('click', this.addIngredientRow.bind(this));
-			this.$recipeForm.on('ajax:success', this.submitRecipe.bind(this));
-			this.$recipeForm.on('ajax:error', this.ajaxError.bind(this));
-			this.$ul.delegate('.deleteIngredientButton', 'click', this.deleteIngredient.bind(this));
-		},
+	function cacheDom() {
+		$ul = $('#ingredientModule');
+		$recipeForm = $ul.find('.new_recipe');
+		$calculateButton = $ul.find('.calculateButton');
+		$ingredientEntries = $ul.find('.ingredientEntries');
+		$addIngredientButton = $ul.find('#addIngredientButton');
+		ingredientTemplate = $ul.find('#ingredient-template').html();
+	}
 
-		submitRecipe: function(e, data) {
-			console.log(data);
-		},
+	function bindEvents() {
+		$addIngredientButton.on('click', addIngredientRow);
+		$recipeForm.on('ajax:success', submitRecipe);
+		$recipeForm.on('ajax:error', ajaxError);
+		$ul.delegate('.deleteIngredientButton', 'click', deleteIngredient);
+	}
 
-		ajaxError: function() {
-			console.log(error);
-		},
+	function submitRecipe(e, data) {
+		statsModule.displayStats(data.recipe);
+	}
 
-		addIngredientRow: function(e) {
+	function ajaxError(error) {
+		console.log(error);
+	}
+
+	function addIngredientRow(e) {
+		if (typeof e === "object"){
 			e.preventDefault();
-			this.$ingredientEntries.append(this.ingredientTemplate);
-		},
-
-		deleteIngredient: function(e) {
-			var $remove = $(e.target).closest('li');
-			var i = this.$ul.find('li').index($remove);
-
-			$remove.remove()
 		}
+		$ingredientEntries.append(ingredientTemplate);
 	}
-	ingredients.init()
-}
 
-var statsModule = function(){
-	var stats = {
-		init: function(){
-			this.bindEvents
-		},
+	function deleteIngredient(e) {
+		if (typeof e === "object"){
+			var $remove = $(e.target).closest('li');
+		}// var i = this.$ul.find('li').index($remove);
+		else if (typeof e === "number"){
+			var $remove = $ul.find('.ingredientEntries').get(e)
+		} else {
+			console.log("Argument passed must be a number.")
+		}
 
-		bindEvents: function(){
-			
-		},
+		$remove.remove();
 	}
-}
+
+	$(function() {
+		init()
+	});
+
+	return {
+		submitRecipe: submitRecipe,
+		addIngredientRow: addIngredientRow,
+		deleteIngredient: deleteIngredient
+	}
+
+})(jQuery);
+
+
+var statsModule = (function($){
+
+	var $ul, $statsList, statsTemplate
+
+	function init() {
+		cacheDom();
+	}
+
+	function cacheDom() {
+		$ul = $('#statsModule');
+		$statsList = $ul.find('#statsList');
+		statsTemplate = $statsList.html();
+		console.log("stats Template: " + statsTemplate)
+	}
+
+
+	function displayStats(recipe){
+		$statsList.find('.statsInitAbv').text("Initial ABV: " + recipe.initial_abv);
+		$statsList.find('.statsInitVolume').text("Initial Volume: " + recipe.initial_volume);
+		$statsList.find('.statsDilution').text("Dilution: " + recipe.dilution);
+		$statsList.find('.statsFinalAbv').text("Final ABV: " + recipe.final_abv);
+		$statsList.find('.statsFinalVolume').text("Final Volume: " + recipe.final_volume);		
+	}
+
+
+	$(function(){
+		init();
+		console.log('loaded');
+	});
+
+	return {
+		init: init,
+		displayStats: displayStats
+	};
+
+})(jQuery);
 
