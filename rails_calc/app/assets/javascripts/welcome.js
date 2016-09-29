@@ -80,11 +80,11 @@ var statsModule = (function($){
 
 
 	function displayStats(recipe){
-		$statsList.find('.statsInitAbv').text("Initial ABV: " + recipe.initial_abv);
-		$statsList.find('.statsInitVolume').text("Initial Volume: " + recipe.initial_volume);
-		$statsList.find('.statsDilution').text("Dilution: " + recipe.dilution);
-		$statsList.find('.statsFinalAbv').text("Final ABV: " + recipe.final_abv);
-		$statsList.find('.statsFinalVolume').text("Final Volume: " + recipe.final_volume);		
+		$statsList.find('.statsInitAbv .stats-value').text(recipe.initial_abv);
+		$statsList.find('.statsInitVolume .stats-value').text(recipe.initial_volume);
+		$statsList.find('.statsDilution .stats-value').text(recipe.dilution);
+		$statsList.find('.statsFinalAbv .stats-value').text(recipe.final_abv);
+		$statsList.find('.statsFinalVolume .stats-value').text(recipe.final_volume);		
 	}
 
 

@@ -66,11 +66,28 @@ body {
 }
 
 /*STATS MODULE*/
-
+#statsModule {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 #statsList {
 	list-style: none;
-	text-align: center;
-	margin-right: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 35%;
+	padding: 0;
+}
+
+.stats-row {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.stats-value {
+	align-self: flex-end;
 }
 
 /*SIGN UP*/
