@@ -76,7 +76,6 @@ var statsModule = (function($){
 		$ul = $('#statsModule');
 		$statsList = $ul.find('#statsList');
 		statsTemplate = $statsList.html();
-		console.log("stats Template: " + statsTemplate)
 	}
 
 
@@ -91,7 +90,6 @@ var statsModule = (function($){
 
 	$(function(){
 		init();
-		console.log('loaded');
 	});
 
 	return {
