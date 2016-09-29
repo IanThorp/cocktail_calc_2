@@ -19,7 +19,8 @@ class RecipesController < ApplicationController
 	def calculate
 		data = { 
 			recipe: params[:recipe], 
-			ingredients: params[:ingredients] 
+			ingredients: params[:ingredients],
+			batch: params[:batch]
 		}
 		data[:recipe][:initial_volume] = 0
 		data[:recipe][:initial_alcohol_volume] = 0

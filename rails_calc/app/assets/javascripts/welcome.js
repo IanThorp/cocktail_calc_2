@@ -1,6 +1,6 @@
 var ingredientModule = (function($) {
 
-	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions
+	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions, $batchOptions, $hiddenBatchNum, $hiddenBatchUnit
 
 	function init(){
 		cacheDom();
@@ -12,15 +12,24 @@ var ingredientModule = (function($) {
 		$recipeForm = $ul.find('.new_recipe');
 		$ingredientEntries = $ul.find('.ingredientEntries');
 		$addIngredientButton = $ul.find('#addIngredientButton');
-		$ingredientOptions = $ul.find('.ingredientsOptions')
+		$ingredientOptions = $ul.find('.ingredientsOptions');
+		$batchOptions = $('.batch-options');
+		$hiddenBatchNum = $recipeForm.find('.batch-number-hidden');
+		$hiddenBatchUnit = $recipeForm.find('.batch-unit-hidden');
 		ingredientTemplate = $ul.find('#ingredient-template').html();
 	}
 
 	function bindEvents() {
 		$recipeForm.on('focusout', function() {
+			addBatchInfo();
 			$recipeForm.submit();
 		})
 		$ingredientOptions.on('click', function() {
+			addBatchInfo();
+			$recipeForm.submit();
+		})
+		$batchOptions.on('focusout', function() {
+			addBatchInfo();
 			$recipeForm.submit();
 		})
 		$addIngredientButton.on('click', addIngredientRow);
@@ -57,6 +66,13 @@ var ingredientModule = (function($) {
 		$remove.remove();
 	}
 
+	function addBatchInfo() {
+		var batchNum = $batchOptions.find('.batch-num').val();
+		var batchUnit = $batchOptions.find('.batch-unit').val();
+		$hiddenBatchNum.val(batchNum);
+		$hiddenBatchUnit.val(batchUnit);
+	}
+
 	$(function() {
 		init()
 	});
@@ -86,10 +102,10 @@ var statsModule = (function($){
 
 
 	function displayStats(recipe){
-		$statsList.find('.statsInitAbv .stats-value').text(recipe.initial_abv);
+		$statsList.find('.statsInitAbv .stats-value').text(recipe.initial_abv * 100);
 		$statsList.find('.statsInitVolume .stats-value').text(recipe.initial_volume);
 		$statsList.find('.statsDilution .stats-value').text(recipe.dilution);
-		$statsList.find('.statsFinalAbv .stats-value').text(recipe.final_abv);
+		$statsList.find('.statsFinalAbv .stats-value').text(recipe.final_abv * 100);
 		$statsList.find('.statsFinalVolume .stats-value').text(recipe.final_volume);		
 	}
 
