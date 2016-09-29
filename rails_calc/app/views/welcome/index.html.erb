@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid info-modules">
 	<div id="ingredientModule" class="col-md-6 border">
 		<h2 class="moduleTitle">Ingredients</h2>
 		<ul id="ingredients">
@@ -39,7 +39,6 @@
 						<%= label_tag "autoDilute", "AutoDilute" %>
 						<div class="recipeButtons">
 							<button class="btn btn-success" id="addIngredientButton">New Row</button>
-							<%= submit_tag "Calculate", class: "btn btn-primary calculateButton" %>
 						</div>
 						
 					</div>
@@ -54,11 +53,11 @@
 		<h1 class="moduleTitle">Stats</h1>
 
 		<ul id='statsList'>
-			<li class="statsInitAbv stats-row"><span class="stats-label">Initial ABV:</span><span class="stats-value">0</span></li>	
-			<li class="statsInitVolume stats-row"><span class="stats-label">Initial Volume:</span><span class="stats-value">0</span></li>	
-			<li class="statsDilution stats-row"><span class="stats-label">Dilution:</span><span class="stats-value">0</span></li>	
-			<li class="statsFinalAbv stats-row"><span class="stats-label">Final ABV:</span><span class="stats-value"></span>0</li>	
-			<li class="statsFinalVolume stats-row"><span class="stats-label">Final Volume:</span><span class="stats-value">0</span></li>	
+			<li class="statsInitAbv stats-row"><span class="stats-label">Initial ABV:</span><span class="stats-value">0 %</span></li>	
+			<li class="statsInitVolume stats-row"><span class="stats-label">Initial Volume:</span><span class="stats-value">0 mL</span></li>	
+			<li class="statsDilution stats-row"><span class="stats-label">Dilution:</span><span class="stats-value">0 mL</span></li>	
+			<li class="statsFinalAbv stats-row"><span class="stats-label">Final ABV:</span><span class="stats-value">0 %</span></li>	
+			<li class="statsFinalVolume stats-row"><span class="stats-label">Final Volume:</span><span class="stats-value">0 mL</span></li>	
 		</ul>
 
 	</div>

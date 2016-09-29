@@ -1,6 +1,6 @@
 var ingredientModule = (function($) {
 
-	var $ul ,$recipeForm ,$calculateButton ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate
+	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions
 
 	function init(){
 		cacheDom();
@@ -10,13 +10,19 @@ var ingredientModule = (function($) {
 	function cacheDom() {
 		$ul = $('#ingredientModule');
 		$recipeForm = $ul.find('.new_recipe');
-		$calculateButton = $ul.find('.calculateButton');
 		$ingredientEntries = $ul.find('.ingredientEntries');
 		$addIngredientButton = $ul.find('#addIngredientButton');
+		$ingredientOptions = $ul.find('.ingredientsOptions')
 		ingredientTemplate = $ul.find('#ingredient-template').html();
 	}
 
 	function bindEvents() {
+		$recipeForm.on('focusout', function() {
+			$recipeForm.submit();
+		})
+		$ingredientOptions.on('click', function() {
+			$recipeForm.submit();
+		})
 		$addIngredientButton.on('click', addIngredientRow);
 		$recipeForm.on('ajax:success', submitRecipe);
 		$recipeForm.on('ajax:error', ajaxError);
@@ -28,7 +34,7 @@ var ingredientModule = (function($) {
 	}
 
 	function ajaxError(error) {
-		console.log(error);
+		alert(error);
 	}
 
 	function addIngredientRow(e) {
