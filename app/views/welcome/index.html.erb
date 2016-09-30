@@ -95,8 +95,12 @@
 				<%= text_field_tag "batches[number]", nil, class: 'batch-num', placeholder: 'number'%>
 				<%= select_tag "batches[unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
 			</div>
-			<ul class='batch-stats'>
-			</ul>
+			<table class='table table-reflow batch-stats'>
+				<tbody class='batch-stats'>
+					<tr class='batch-stats-headers'></tr>
+					<tr class='batch-stats-values'></tr>
+				</tbody>
+			</table>
 	</div>
 	<div id="recipeModule" class="col-md-6 border">
 		<h1 class="moduleTitle">Recipe</h1>
