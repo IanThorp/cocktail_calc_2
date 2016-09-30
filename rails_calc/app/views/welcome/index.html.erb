@@ -57,11 +57,11 @@
 		<h1 class="moduleTitle">Stats</h1>
 
 		<ul id='statsList'>
-			<li class="statsInitAbv stats-row"><span class="stats-label">Initial ABV:</span><span class="stats-value">0 %</span></li>	
-			<li class="statsInitVolume stats-row"><span class="stats-label">Initial Volume:</span><span class="stats-value">0 mL</span></li>	
-			<li class="statsDilution stats-row"><span class="stats-label">Dilution:</span><span class="stats-value">0 mL</span></li>	
-			<li class="statsFinalAbv stats-row"><span class="stats-label">Final ABV:</span><span class="stats-value">0 %</span></li>	
-			<li class="statsFinalVolume stats-row"><span class="stats-label">Final Volume:</span><span class="stats-value">0 mL</span></li>	
+			<li class="statsInitAbv stats-row"><span class="stats-label">Initial ABV:</span><span class="stats-value">0</span>%</li>	
+			<li class="statsInitVolume stats-row"><span class="stats-label">Initial Volume:</span><span class="stats-value">0</span>mL</li>	
+			<li class="statsDilution stats-row"><span class="stats-label">Dilution:</span><span class="stats-value">0</span>mL</li>	
+			<li class="statsFinalAbv stats-row"><span class="stats-label">Final ABV:</span><span class="stats-value">0</span>%</li>	
+			<li class="statsFinalVolume stats-row"><span class="stats-label">Final Volume:</span><span class="stats-value">0</span>mL</li>	
 		</ul>
 
 	</div>
@@ -71,6 +71,8 @@
 				<%= text_field_tag "batches[number]", nil, class: 'batch-num', placeholder: 'number'%>
 				<%= select_tag "batches[unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-unit'%>
 			</div>
+			<ul class='batch-stats'>
+			</ul>
 	</div>
 	<div id="recipeModule" class="col-md-6 border">
 		<h1 class="moduleTitle">Recipe</h1>

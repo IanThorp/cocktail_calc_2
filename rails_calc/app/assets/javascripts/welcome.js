@@ -39,6 +39,7 @@ var ingredientModule = (function($) {
 	}
 
 	function submitRecipe(e, data) {
+		displayBatchStats(data)
 		statsModule.displayStats(data.recipe);
 	}
 
@@ -73,6 +74,19 @@ var ingredientModule = (function($) {
 		$hiddenBatchUnit.val(batchUnit);
 	}
 
+	function displayBatchStats(data) {
+		// var multiplier = data.batch.multiplier;
+		// var ingredients = data.ingredients;
+		// var batchHtml = ''
+		// for (var i = 0; i < ingredients.length; i++) {
+		// 	console.log(ingredients[i])
+		// 	if (ingredients[i].name.length > 0){
+		// 		batchHtml += '<li>' + ingredients[i].name + ': ' + (ingredients[i].volume_ml * multiplier) + ' mL</li>'
+		// 	}
+		// }
+		$('.batch-stats').html(data.batch.html);
+	}
+
 	$(function() {
 		init()
 	});
@@ -102,10 +116,10 @@ var statsModule = (function($){
 
 
 	function displayStats(recipe){
-		$statsList.find('.statsInitAbv .stats-value').text(recipe.initial_abv * 100);
+		$statsList.find('.statsInitAbv .stats-value').text(Math.round(recipe.initial_abv * 10000) / 100);
 		$statsList.find('.statsInitVolume .stats-value').text(recipe.initial_volume);
 		$statsList.find('.statsDilution .stats-value').text(recipe.dilution);
-		$statsList.find('.statsFinalAbv .stats-value').text(recipe.final_abv * 100);
+		$statsList.find('.statsFinalAbv .stats-value').text(Math.round(recipe.final_abv * 10000) / 100);
 		$statsList.find('.statsFinalVolume .stats-value').text(recipe.final_volume);		
 	}
 
