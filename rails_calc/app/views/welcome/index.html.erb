@@ -42,7 +42,8 @@
 						</div>
 						<div class="hidden-inputs">
 							<%= hidden_field_tag 'batch[number]', nil,  class: 'batch-number-hidden'%>
-							<%= hidden_field_tag 'batch[unit]', nil, class: 'batch-unit-hidden'%>
+							<%= hidden_field_tag 'batch[input_unit]', nil, class: 'batch-input-unit-hidden'%>
+							<%= hidden_field_tag 'batch[output_unit]', 'ml', class: 'batch-output-unit-hidden'%>
 						</div>
 						
 					</div>
@@ -67,9 +68,10 @@
 	</div>
 	<div id="batchesModule" class="col-md-6 border">
 		<h1 class="moduleTitle">Batches</h1>
+			<button class='batch-unit-toggle btn-info'>Toggle Units</button>
 			<div class='batch-options'>
 				<%= text_field_tag "batches[number]", nil, class: 'batch-num', placeholder: 'number'%>
-				<%= select_tag "batches[unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-unit'%>
+				<%= select_tag "batches[unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
 			</div>
 			<ul class='batch-stats'>
 			</ul>

@@ -1,6 +1,6 @@
 var ingredientModule = (function($) {
 
-	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions, $batchOptions, $hiddenBatchNum, $hiddenBatchUnit
+	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, $hiddenBatchOutputUnit
 
 	function init(){
 		cacheDom();
@@ -15,7 +15,8 @@ var ingredientModule = (function($) {
 		$ingredientOptions = $ul.find('.ingredientsOptions');
 		$batchOptions = $('.batch-options');
 		$hiddenBatchNum = $recipeForm.find('.batch-number-hidden');
-		$hiddenBatchUnit = $recipeForm.find('.batch-unit-hidden');
+		$hiddenBatchInputUnit = $recipeForm.find('.batch-input-unit-hidden');
+		$hiddenBatchOutputUnit = $recipeForm.find('.batch-output-unit-hidden');
 		ingredientTemplate = $ul.find('#ingredient-template').html();
 	}
 
@@ -32,6 +33,7 @@ var ingredientModule = (function($) {
 			addBatchInfo();
 			$recipeForm.submit();
 		})
+		$('.batch-unit-toggle').on('click', batchToggleButton);
 		$addIngredientButton.on('click', addIngredientRow);
 		$recipeForm.on('ajax:success', submitRecipe);
 		$recipeForm.on('ajax:error', ajaxError);
@@ -69,9 +71,20 @@ var ingredientModule = (function($) {
 
 	function addBatchInfo() {
 		var batchNum = $batchOptions.find('.batch-num').val();
-		var batchUnit = $batchOptions.find('.batch-unit').val();
+		var batchInputUnit = $batchOptions.find('.batch-input-unit').val();
+		var batchOutputUnit = $batchOptions.find('.batch-output-unit').val();
 		$hiddenBatchNum.val(batchNum);
-		$hiddenBatchUnit.val(batchUnit);
+		$hiddenBatchInputUnit.val(batchInputUnit);
+	}
+
+	function batchToggleButton() {
+		console.log($hiddenBatchOutputUnit)
+		if($hiddenBatchOutputUnit === 'ml') {
+			$hiddenBatchOutputUnit.val('floz');
+		} else {
+			$hiddenBatchOutputUnit.val('ml');
+		}
+		$recipeForm.submit();
 	}
 
 	function displayBatchStats(data) {

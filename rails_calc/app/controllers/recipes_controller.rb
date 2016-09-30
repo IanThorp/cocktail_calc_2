@@ -53,13 +53,13 @@ class RecipesController < ApplicationController
 	def calculate_ingredient_multiplier(batch, final_volume)
 		batch[:number] = batch[:number].to_f
 		multiplier = 1
-		case batch[:unit]
+		case batch[:input_unit]
 		when "floz"
 			multiplier = batch[:number] * 29.375 / final_volume
 		when "ml"
 			multiplier = batch[:number] / final_volume
 		else
-			# batch[:unit] must must 'drinks' at this point
+			# batch[:input_unit] must be 'drinks' at this point
 			multiplier = batch[:number]
 		end
 		multiplier
@@ -69,11 +69,20 @@ class RecipesController < ApplicationController
 		batch_html = ''
 		total_volume = 0
 		data[:ingredients].each do |ingredient|
-			batch_html += '<li>' + ingredient[:name] + ': ' + (ingredient[:volume_ml] * data[:batch][:multiplier]).round(2).to_s + ' mL</li>'
+			batch_html += '<li>' + ingredient[:name] + ': '
+			if data[:batch][:output_unit] == 'floz'
+				batch_html += (ingredient[:volume_ml] * data[:batch][:multiplier] / 29.375).round(2).to_s + ' fl oz</li>'				
+			else
+				batch_html += (ingredient[:volume_ml] * data[:batch][:multiplier]).round(2).to_s + ' mL</li>'
+			end
 			total_volume += (ingredient[:volume_ml] * data[:batch][:multiplier])
 		end
 		if data[:recipe][:dilution] > 0
-			batch_html += '<li> Water: ' + (data[:recipe][:dilution] * data[:batch][:multiplier]).round(2).to_s + ' mL</li>'
+			if data[:batch][:output_unit] == 'floz'
+				batch_html += '<li> Water: ' + (data[:recipe][:dilution] * data[:batch][:multiplier] / 29.375).round(2).to_s + ' fl oz</li>'				
+			else
+				batch_html += '<li> Water: ' + (data[:recipe][:dilution] * data[:batch][:multiplier]).round(2).to_s + ' mL</li>'
+			end
 			total_volume += (data[:recipe][:dilution] * data[:batch][:multiplier])
 		end
 		batch_html += '<li> Total Volume: ' + total_volume.round(2).to_s + ' mL</li>'

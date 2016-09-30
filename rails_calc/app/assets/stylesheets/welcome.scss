@@ -95,6 +95,17 @@ body {
 	padding: 0;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+}
+
+#batchesModule {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.batch-unit-toggle {
+	text-decoration: none;
 }
 
 /*INFO MODULES*/
