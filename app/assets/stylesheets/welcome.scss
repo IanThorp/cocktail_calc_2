@@ -1,0 +1,131 @@
+// Place all the styles related to the welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/*HEADER*/
+.border {
+	border: 1px solid black;
+}
+
+nav {
+	width: 100%;
+}
+
+/*PAGE BODY*/
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.moduleTitle {
+	text-align: center;
+}
+
+/*INGREDIENT MODULE*/
+
+.ingredientsHeader h3{
+	display: inline-block;
+}
+
+#ingredients {
+	list-style: none;
+}
+
+.name-col {
+	width: 30%;
+
+}
+
+.abv-col {
+	width: 15%;
+}
+
+.volume-col {
+	width: 15%;
+}
+
+.unit-col {
+	width: 15%;
+}
+
+.autoDiluteCheck {
+	background-color: lightgrey;
+	margin-left: 5px;
+	border-left: 1px solid black;
+}
+
+.ingredientsOptions {
+	text-align: center;
+}
+
+.recipeButtons {
+	text-align: center;
+}
+
+/*STATS MODULE*/
+#statsModule {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+#statsList {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 35%;
+	padding: 0;
+}
+
+.stats-row {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.stats-value {
+	align-self: flex-end;
+}
+
+.batch-stats {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#batchesModule {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.batch-unit-toggle {
+	text-decoration: none;
+}
+
+/*INFO MODULES*/
+
+
+/*SIGN UP*/
+
+.devise_forms {
+	display: flex;
+	justify-content: center;
+}
+
+.actions {
+	display: flex;
+	justify-content: center;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+/*LOG IN*/
