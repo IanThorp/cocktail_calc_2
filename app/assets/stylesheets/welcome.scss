@@ -70,25 +70,14 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 }
+
 #statsList {
-	list-style: none;
 	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	width: 35%;
-	padding: 0;
+	justify-content: center;
 }
 
-.stats-row {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-}
-
-.stats-value {
-	align-self: flex-end;
-}
 
 .batch-stats {
 	list-style: none;

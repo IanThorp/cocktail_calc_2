@@ -25,7 +25,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
 gem 'normalize-rails'
-gem 'bootstrap-sass'
+gem 'bootstrap'
 gem 'rails_12factor'
 
 # Use ActiveModel has_secure_password

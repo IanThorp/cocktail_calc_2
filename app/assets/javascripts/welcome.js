@@ -119,11 +119,11 @@ var statsModule = (function($){
 
 
 	function displayStats(recipe){
-		$statsList.find('.statsInitAbv .stats-value').text(Math.round(recipe.initial_abv * 10000) / 100);
-		$statsList.find('.statsInitVolume .stats-value').text(recipe.initial_volume);
-		$statsList.find('.statsDilution .stats-value').text(recipe.dilution);
-		$statsList.find('.statsFinalAbv .stats-value').text(Math.round(recipe.final_abv * 10000) / 100);
-		$statsList.find('.statsFinalVolume .stats-value').text(recipe.final_volume);		
+		$statsList.find('.statsInitAbv.stats-value').text(Math.round(recipe.initial_abv * 10000) / 100);
+		$statsList.find('.statsInitVolume.stats-value').text(recipe.initial_volume);
+		$statsList.find('.statsDilution.stats-value').text(recipe.dilution);
+		$statsList.find('.statsFinalAbv.stats-value').text(Math.round(recipe.final_abv * 10000) / 100);
+		$statsList.find('.statsFinalVolume.stats-value').text(recipe.final_volume);		
 	}
 
 

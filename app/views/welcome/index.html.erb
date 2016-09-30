@@ -57,15 +57,37 @@
 	<div id="statsModule" class="col-md-6 border">
 		<h1 class="moduleTitle">Stats</h1>
 
-		<ul id='statsList'>
-			<li class="statsInitAbv stats-row"><span class="stats-label">Initial ABV:</span><span class="stats-value">0</span>%</li>	
-			<li class="statsInitVolume stats-row"><span class="stats-label">Initial Volume:</span><span class="stats-value">0</span>mL</li>	
-			<li class="statsDilution stats-row"><span class="stats-label">Dilution:</span><span class="stats-value">0</span>mL</li>	
-			<li class="statsFinalAbv stats-row"><span class="stats-label">Final ABV:</span><span class="stats-value">0</span>%</li>	
-			<li class="statsFinalVolume stats-row"><span class="stats-label">Final Volume:</span><span class="stats-value">0</span>mL</li>	
-		</ul>
+		<table id='statsList' class="table table-reflow">
+			<thead>
+				<tr>
+					<th>Initial ABV</th>
+					<th>Initial Volume</th>
+					<th>Dilution</th>
+					<th>Final ABV</th>
+					<th>Final Volume</th>
+				</tr>
+			</thead>
 
+			<tbody>
+				<tr>
+					<td class="stats-value statsInitAbv">0</td>
+					<td class="stats-value statsInitVolume">0</td>
+					<td class="stats-value statsDilution">0</td>
+					<td class="stats-value statsFinalAbv">0</td>
+					<td class="stats-value statsFinalVolume">0</td>
+				</tr>
+
+				<tr>
+					<td class="stats-unit statsInitAbv">%</td>
+					<td class="stats-unit statsInitVolume">mL</td>
+					<td class="stats-unit statsInitDilution">mL</td>
+					<td class="stats-unit statsFinalAbv">%</td>
+					<td class="stats-unit statsFinalVolume">mL</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+	
 	<div id="batchesModule" class="col-md-6 border">
 		<h1 class="moduleTitle">Batches</h1>
 			<button class='batch-unit-toggle btn-info'>Toggle Units</button>
