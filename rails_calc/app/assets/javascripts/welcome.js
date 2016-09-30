@@ -78,8 +78,7 @@ var ingredientModule = (function($) {
 	}
 
 	function batchToggleButton() {
-		console.log($hiddenBatchOutputUnit)
-		if($hiddenBatchOutputUnit === 'ml') {
+		if($hiddenBatchOutputUnit.val() === 'ml') {
 			$hiddenBatchOutputUnit.val('floz');
 		} else {
 			$hiddenBatchOutputUnit.val('ml');
@@ -88,15 +87,6 @@ var ingredientModule = (function($) {
 	}
 
 	function displayBatchStats(data) {
-		// var multiplier = data.batch.multiplier;
-		// var ingredients = data.ingredients;
-		// var batchHtml = ''
-		// for (var i = 0; i < ingredients.length; i++) {
-		// 	console.log(ingredients[i])
-		// 	if (ingredients[i].name.length > 0){
-		// 		batchHtml += '<li>' + ingredients[i].name + ': ' + (ingredients[i].volume_ml * multiplier) + ' mL</li>'
-		// 	}
-		// }
 		$('.batch-stats').html(data.batch.html);
 	}
 

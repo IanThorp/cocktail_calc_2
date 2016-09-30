@@ -41,7 +41,6 @@ class RecipesController < ApplicationController
 		data[:batch][:multiplier] = calculate_ingredient_multiplier(data[:batch], data[:recipe][:final_volume])
 		data[:batch][:html] = create_batch_stats_html(data)
 
-		# data[:batch][:multiplier] = ingredient_multiplier
 		respond_to do |format|
 			format.json {render json: data}
 			format.html 
@@ -68,24 +67,24 @@ class RecipesController < ApplicationController
 	def create_batch_stats_html(data)
 		batch_html = ''
 		total_volume = 0
+		if data[:batch][:output_unit] == 'floz'
+			unit_conversion = 29.375
+			unit_text = 'fl oz'
+		else
+			unit_conversion = 1
+			unit_text = 'mL'
+		end
 		data[:ingredients].each do |ingredient|
-			batch_html += '<li>' + ingredient[:name] + ': '
-			if data[:batch][:output_unit] == 'floz'
-				batch_html += (ingredient[:volume_ml] * data[:batch][:multiplier] / 29.375).round(2).to_s + ' fl oz</li>'				
-			else
-				batch_html += (ingredient[:volume_ml] * data[:batch][:multiplier]).round(2).to_s + ' mL</li>'
+			if ingredient[:volume] > 0
+				batch_html += "<li> #{ingredient[:name]}: #{(ingredient[:volume_ml] * data[:batch][:multiplier] / unit_conversion).round(2).to_s} #{unit_text}</li>"
+				total_volume += (ingredient[:volume_ml] * data[:batch][:multiplier] / unit_conversion)
 			end
-			total_volume += (ingredient[:volume_ml] * data[:batch][:multiplier])
 		end
 		if data[:recipe][:dilution] > 0
-			if data[:batch][:output_unit] == 'floz'
-				batch_html += '<li> Water: ' + (data[:recipe][:dilution] * data[:batch][:multiplier] / 29.375).round(2).to_s + ' fl oz</li>'				
-			else
-				batch_html += '<li> Water: ' + (data[:recipe][:dilution] * data[:batch][:multiplier]).round(2).to_s + ' mL</li>'
-			end
-			total_volume += (data[:recipe][:dilution] * data[:batch][:multiplier])
+			batch_html += "<li> Water: #{(data[:recipe][:dilution] * data[:batch][:multiplier] / unit_conversion).round(2).to_s} #{unit_text}</li>"			
+			total_volume += (data[:recipe][:dilution] * data[:batch][:multiplier] / unit_conversion)
 		end
-		batch_html += '<li> Total Volume: ' + total_volume.round(2).to_s + ' mL</li>'
+		batch_html += "<li> Total Volume: #{total_volume.round(2).to_s} #{unit_text}</li>"
 		batch_html
 	end
 
