@@ -16,12 +16,22 @@ class RecipesController < ApplicationController
 		end
 	end
 
+	def show
+		
+	end
+
 	def calculate
 		data = { 
 			recipe: params[:recipe], 
 			ingredients: params[:ingredients],
-			batch: params[:batch]
+			batch: params[:batch],
+			details: params[:details]
 		}
+
+		if data[:details][:save] == "true"
+			save_recipe(data)
+		end
+
 		data[:recipe][:initial_volume] = 0
 		data[:recipe][:initial_alcohol_volume] = 0
 
@@ -48,6 +58,26 @@ class RecipesController < ApplicationController
 	end
 
 	private
+
+	def save_recipe(data)
+		@recipe = Recipe.new(user_id: current_user[:id], dilute: to_boolean(data[:recipe][:autoDilute]), method: data[:recipe][:method], name: data[:recipe][:name])
+		if @recipe.save
+			data[:ingredients].each do |ingredient|
+				@ingredient = Ingredient.new(name: ingredient[:name], abv: ingredient[:abv])
+				if @ingredient.save
+					@ingredients_recipes = IngredientsRecipe.create(recipe_id: @recipe.id, ingredient_id: @ingredient.id, volume: ingredient[:volume], unit: ingredient[:unit])
+					# @ingredients_recipes.save
+				end
+			end
+		end
+		# data[:ingredients].each do
+		# 	@ingredient
+		# end
+	end
+
+	def to_boolean(str)
+		str == 'true'
+	end
 
 	def calculate_ingredient_multiplier(batch, final_volume)
 		batch[:number] = batch[:number].to_f

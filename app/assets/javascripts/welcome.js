@@ -1,6 +1,6 @@
 var ingredientModule = (function($) {
 
-	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, $hiddenBatchOutputUnit
+	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, $hiddenBatchOutputUnit, $saveButton
 
 	function init(){
 		cacheDom();
@@ -17,6 +17,7 @@ var ingredientModule = (function($) {
 		$hiddenBatchNum = $recipeForm.find('.batch-number-hidden');
 		$hiddenBatchInputUnit = $recipeForm.find('.batch-input-unit-hidden');
 		$hiddenBatchOutputUnit = $recipeForm.find('.batch-output-unit-hidden');
+		$saveButton = $ul.find('#save-button');
 		ingredientTemplate = $ul.find('#ingredient-template').html();
 	}
 
@@ -35,13 +36,19 @@ var ingredientModule = (function($) {
 		})
 		$('.batch-unit-toggle').on('click', batchToggleButton);
 		$addIngredientButton.on('click', addIngredientRow);
+		$saveButton.on('click', saveRecipe)
 		$recipeForm.on('ajax:success', submitRecipe);
 		$recipeForm.on('ajax:error', ajaxError);
 		$ul.delegate('.deleteIngredientButton', 'click', deleteIngredient);
 	}
 
+	function saveRecipe(e, data) {
+		$('.details-save-hidden').val(true);
+		$recipeForm.submit();
+		$('.details-save-hidden').val(false);
+	}
+
 	function submitRecipe(e, data) {
-		console.log(data)
 		displayBatchStats(data)
 		statsModule.displayStats(data.recipe);
 	}
