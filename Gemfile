@@ -27,6 +27,7 @@ gem 'devise'
 gem 'normalize-rails'
 gem 'bootstrap'
 gem 'rails_12factor'
+gem 'tether-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

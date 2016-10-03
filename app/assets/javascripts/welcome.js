@@ -45,12 +45,18 @@ var ingredientModule = (function($) {
 	function saveRecipe(e, data) {
 		addBatchInfo();
 		$recipeForm.attr('action', '/recipes/save')
+		.find(':input').each(function() {
+			$(this).attr('required', true)
+		})
 		.trigger('submit')
 		.attr('action', '/recipes/calculate')
+		.find(':input').each(function() {
+			console.log(this)
+			$(this).removeAttr('required')
+		})
 	}
 
 	function submitRecipe(e, data) {
-		console.log("AJAX SUCCESS!!!!")
 		if (typeof data.batch != 'undefined') {
 			displayBatchStats(data)
 			statsModule.displayStats(data.recipe);
