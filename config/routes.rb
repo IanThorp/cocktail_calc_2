@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 	get '/recipes/calculate', to: 'recipes#calculate'
+	get '/recipes/save', to: 'recipes#save'
 	resources :recipes
 	resources :ingredients_recipes
 	resources :ingredients

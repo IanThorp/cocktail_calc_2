@@ -17,7 +17,7 @@ class RecipesController < ApplicationController
 	end
 
 	def show
-		
+
 	end
 
 	def calculate
@@ -25,12 +25,7 @@ class RecipesController < ApplicationController
 			recipe: params[:recipe], 
 			ingredients: params[:ingredients],
 			batch: params[:batch],
-			details: params[:details]
 		}
-
-		if data[:details][:save] == "true"
-			save_recipe(data)
-		end
 
 		data[:recipe][:initial_volume] = 0
 		data[:recipe][:initial_alcohol_volume] = 0
@@ -57,23 +52,29 @@ class RecipesController < ApplicationController
 		end
 	end
 
-	private
-
-	def save_recipe(data)
+	def save
+		data = { 
+			recipe: params[:recipe], 
+			ingredients: params[:ingredients],
+			batch: params[:batch],
+		}
 		@recipe = Recipe.new(user_id: current_user[:id], dilute: to_boolean(data[:recipe][:autoDilute]), method: data[:recipe][:method], name: data[:recipe][:name])
 		if @recipe.save
 			data[:ingredients].each do |ingredient|
 				@ingredient = Ingredient.new(name: ingredient[:name], abv: ingredient[:abv])
 				if @ingredient.save
-					@ingredients_recipes = IngredientsRecipe.create(recipe_id: @recipe.id, ingredient_id: @ingredient.id, volume: ingredient[:volume], unit: ingredient[:unit])
-					# @ingredients_recipes.save
+					@ingredients_recipes = IngredientsRecipe.new(recipe_id: @recipe.id, ingredient_id: @ingredient.id, volume: ingredient[:volume], unit: ingredient[:unit])
+					@ingredients_recipes.save
+					respond_to do |format|
+						format.json {render json: {success: true}}
+					end
+					return
 				end
 			end
 		end
-		# data[:ingredients].each do
-		# 	@ingredient
-		# end
 	end
+
+	private
 
 	def to_boolean(str)
 		str == 'true'

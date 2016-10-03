@@ -1,6 +1,6 @@
 var ingredientModule = (function($) {
 
-	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, $hiddenBatchOutputUnit, $saveButton
+	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $clickRefresh, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, $hiddenBatchOutputUnit, $saveButton
 
 	function init(){
 		cacheDom();
@@ -12,7 +12,7 @@ var ingredientModule = (function($) {
 		$recipeForm = $ul.find('.new_recipe');
 		$ingredientEntries = $ul.find('.ingredientEntries');
 		$addIngredientButton = $ul.find('#addIngredientButton');
-		$ingredientOptions = $ul.find('.ingredientsOptions');
+		$clickRefresh = $ul.find('.click-refresh');
 		$batchOptions = $('.batch-options');
 		$hiddenBatchNum = $recipeForm.find('.batch-number-hidden');
 		$hiddenBatchInputUnit = $recipeForm.find('.batch-input-unit-hidden');
@@ -26,7 +26,7 @@ var ingredientModule = (function($) {
 			addBatchInfo();
 			$recipeForm.submit();
 		})
-		$ingredientOptions.on('click', function() {
+		$clickRefresh.on('click', function() {
 			addBatchInfo();
 			$recipeForm.submit();
 		})
@@ -43,14 +43,22 @@ var ingredientModule = (function($) {
 	}
 
 	function saveRecipe(e, data) {
-		$('.details-save-hidden').val(true);
-		$recipeForm.submit();
-		$('.details-save-hidden').val(false);
+		addBatchInfo();
+		$recipeForm.attr('action', '/recipes/save')
+		.trigger('submit')
+		.attr('action', '/recipes/calculate')
 	}
 
 	function submitRecipe(e, data) {
-		displayBatchStats(data)
-		statsModule.displayStats(data.recipe);
+		console.log("AJAX SUCCESS!!!!")
+		if (typeof data.batch != 'undefined') {
+			displayBatchStats(data)
+			statsModule.displayStats(data.recipe);
+		} else {
+			if (data.success) {
+				$('#alert-messages').append('<div class="alert alert-success fade in"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>Success!</strong> Your recipe has been saved.</div>')
+			}
+		}
 	}
 
 	function ajaxError(error) {
