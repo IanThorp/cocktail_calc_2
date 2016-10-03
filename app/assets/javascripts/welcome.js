@@ -22,18 +22,9 @@ var ingredientModule = (function($) {
 	}
 
 	function bindEvents() {
-		$recipeForm.on('focusout', function() {
-			addBatchInfo();
-			$recipeForm.submit();
-		})
-		$clickRefresh.on('click', function() {
-			addBatchInfo();
-			$recipeForm.submit();
-		})
-		$batchOptions.on('focusout', function() {
-			addBatchInfo();
-			$recipeForm.submit();
-		})
+		$recipeForm.on('focusout', recalculate);
+		$clickRefresh.on('click', recalculate);
+		$batchOptions.on('focusout', recalculate)
 		$('.batch-unit-toggle').on('click', batchToggleButton);
 		$addIngredientButton.on('click', addIngredientRow);
 		$saveButton.on('click', saveRecipe)
@@ -45,15 +36,8 @@ var ingredientModule = (function($) {
 	function saveRecipe(e, data) {
 		addBatchInfo();
 		$recipeForm.attr('action', '/recipes/save')
-		.find(':input').each(function() {
-			$(this).attr('required', true)
-		})
-		.trigger('submit')
+		.submit()
 		.attr('action', '/recipes/calculate')
-		.find(':input').each(function() {
-			console.log(this)
-			$(this).removeAttr('required')
-		})
 	}
 
 	function submitRecipe(e, data) {
@@ -61,7 +45,8 @@ var ingredientModule = (function($) {
 			displayBatchStats(data)
 			statsModule.displayStats(data.recipe);
 		} else {
-			if (data.success) {
+			if (data.success === true) {
+				console.log(data.success)
 				$('#alert-messages').append('<div class="alert alert-success fade in"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>Success!</strong> Your recipe has been saved.</div>')
 			}
 		}
@@ -110,6 +95,13 @@ var ingredientModule = (function($) {
 
 	function displayBatchStats(data) {
 		$('.batch-stats').html(data.batch.html);
+	}
+
+	function recalculate() {
+		addBatchInfo();
+		$recipeForm.attr('novalidate', true)
+		.submit()
+		.removeAttr('novalidate')
 	}
 
 	$(function() {

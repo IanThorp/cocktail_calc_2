@@ -65,13 +65,13 @@ class RecipesController < ApplicationController
 				if @ingredient.save
 					@ingredients_recipes = IngredientsRecipe.new(recipe_id: @recipe.id, ingredient_id: @ingredient.id, volume: ingredient[:volume], unit: ingredient[:unit])
 					@ingredients_recipes.save
-					respond_to do |format|
-						format.json {render json: {success: true}}
-					end
-					return
 				end
 			end
 		end
+		respond_to do |format|
+			format.json {render json: {success: true, data: data}}
+		end
+		return
 	end
 
 	private

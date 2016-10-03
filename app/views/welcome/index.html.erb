@@ -16,9 +16,9 @@
 				<div class="additionalIngredients">
 					<script id="ingredient-template" type="text/template">
 						<li>
-							<%= text_field_tag "ingredients[][name]", nil, class: 'name-col'%>
-							<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col'%>
-							<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col'%>
+							<%= text_field_tag "ingredients[][name]", nil, class: 'name-col', required: 'true' , pattern: '.+'%>
+							<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col', required: 'true', pattern: '(\d{1,2}|100)'%>
+							<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col', required: 'true', pattern: '\d+'%>
 							<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
 							<button class="deleteIngredientButton btn btn-danger btn-sm">X</button>
 						</li>	
@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="ingredientsOptions">
-						<%= text_field_tag "recipe[name]", nil, class: "recipeName click-refresh", placeholder: "Recipe Name" %>
+						<%= text_field_tag "recipe[name]", nil, class: "recipeName click-refresh", placeholder: "Recipe Name", required: 'true' %>
 						<%= radio_button_tag "recipe[method]", "stirred", false, class: "radio-inline click-refresh" %>
 						<%= label_tag "stirred", "Stirred" %>
 						<%= radio_button_tag "recipe[method]", "shaken", false, class: "radio-inline click-refresh" %>
