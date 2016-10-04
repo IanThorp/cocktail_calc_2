@@ -1,0 +1,9 @@
+<div class='col-md-8 single-recipe border'>
+	<h2><%= link_to recipe.name, recipe_path(id: recipe.id) %></h2>
+	<ul class='list-group'>
+	<% recipe.ingredients.each do |ingredient|%>
+		<%ingredients_recipe = recipe.ingredients_recipes.find_by(ingredient_id: ingredient.id)%>
+		<li class='list-group-item'><%=ingredient.name%> <%=ingredients_recipe.volume%> <%=ingredients_recipe.unit%></li>
+	<%end%>
+	</ul>
+</div>
