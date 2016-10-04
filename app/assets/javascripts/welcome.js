@@ -104,8 +104,9 @@ var ingredientModule = (function($) {
 		.removeAttr('novalidate')
 	}
 
-	$(function() {
+	$(document).on('page:change', function() {
 		init()
+		console.log("IT IS INITIALIZED")
 	});
 
 	return {
@@ -141,7 +142,7 @@ var statsModule = (function($){
 	}
 
 
-	$(function(){
+	$(document).on('page:change', function() {
 		init();
 	});
 
