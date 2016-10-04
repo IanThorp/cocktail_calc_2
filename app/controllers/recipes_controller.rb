@@ -17,7 +17,23 @@ class RecipesController < ApplicationController
 	end
 
 	def show
-
+		@recipe = Recipe.find(params[:id])
+		ingredients = []
+		@recipe.ingredients_recipes.each do |ingredient_recipe|
+			current_ingredient = Ingredient.find(ingredient_recipe[:ingredient_id])
+			ingredients << {
+				name: current_ingredient.name,
+				abv: current_ingredient.abv,
+				volume: ingredient_recipe.volume,
+				unit: ingredient_recipe.unit
+			}
+		end
+		@recipe_info = {
+			name: @recipe.name,
+			method: @recipe.method,
+			dilute: @recipe.dilute,
+			ingredients: ingredients
+		}
 	end
 
 	def calculate

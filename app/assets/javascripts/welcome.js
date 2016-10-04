@@ -46,8 +46,8 @@ var ingredientModule = (function($) {
 			statsModule.displayStats(data.recipe);
 		} else {
 			if (data.success === true) {
-				console.log(data.success)
-				$('#alert-messages').append('<div class="alert alert-success fade in"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>Success!</strong> Your recipe has been saved.</div>')
+				var recipeName = data.data.recipe.name;
+				$('#alert-messages').append('<div class="alert alert-success fade in"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + recipeName + '</strong> recipe has been saved.</div>')
 			}
 		}
 	}

@@ -1,1 +1,9 @@
 <h1><%= current_user.email%></h1>
+<% @recipes.each do |recipe|%>
+	<h2><%= link_to recipe.name, recipe_path(id: recipe.id) %></h2>
+	<ul>
+	<% recipe.ingredients.each do |ingredient|%>
+		<li><%=ingredient.name%></li>
+	<%end%>
+	</ul>
+<% end %>
