@@ -17,8 +17,8 @@
 					<script id="ingredient-template" type="text/template">
 						<li>
 							<%= text_field_tag "ingredients[][name]", nil, class: 'name-col', required: 'true' , pattern: '.+', title: 'Please enter ingredient name.'%>
-							<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col', required: 'true', pattern: '(\d{1,2}|100)', title: 'Must be a number between 0 and 100'%>
-							<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col', required: 'true', pattern: '\d+', title: 'Must be a number'%>
+							<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100'%>
+							<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number'%>
 							<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
 							<button class="deleteIngredientButton btn btn-danger btn-sm">X</button>
 						</li>	
