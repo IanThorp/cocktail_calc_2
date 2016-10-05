@@ -4,59 +4,64 @@
 	<div id="ingredientModule" class="col-md-6 border">
 		<h2 class="moduleTitle">Ingredients</h2>
 		<ul id="ingredients">
-				<li class=ingredientsHeader>
-					<h3 class="name-col">Name</h3>
-					<h3 class="abv-col">ABV</h3>
-					<h3 class="volume-col">Volume</h3>
-					<h3 class="unit-col">Unit</h3>
-				</li>
+			<li class=ingredientsHeader>
+				<h3 class="name-col">Name</h3>
+				<h3 class="abv-col">ABV</h3>
+				<h3 class="volume-col">Volume</h3>
+				<h3 class="unit-col">Unit</h3>
+			</li>
 
 			
-				<%= form_tag "/recipes/calculate", class:"new_recipe", remote: true, method: 'GET' do%>
-				<div class="additionalIngredients">
-					<script id="ingredient-template" type="text/template">
-						<li>
-							<%= text_field_tag "ingredients[][name]", nil, class: 'name-col', required: 'true' , pattern: '.+', title: 'Please enter ingredient name.'%>
-							<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100'%>
-							<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number'%>
-							<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
-							<button class="deleteIngredientButton btn btn-danger btn-sm">X</button>
-						</li>	
-					</script>
-					<div class="ingredientEntries">
-						<%if !defined?(recipe_info)%>
-							<% @num_rows.times do%>
-								<%= render partial: 'welcome/ingredient_form', locals: {ingredient: {}}%>
-							<%end%>
-						<%else%>
-							<% recipe_info[:ingredients].each do |ingredient| %>
-								<%= render partial: 'welcome/ingredient_form', locals: {ingredient: ingredient} %>
-							<% end %>
+			<%= form_tag "/recipes/calculate", class:"new_recipe", remote: true, method: 'GET' do%>
+			<div class="additionalIngredients">
+				<script id="ingredient-template" type="text/template">
+					<li>
+						<%= text_field_tag "ingredients[][name]", nil, class: 'name-col', required: 'true' , pattern: '.+', title: 'Please enter ingredient name.'%>
+						<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100'%>
+						<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number'%>
+						<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
+						<button class="deleteIngredientButton btn btn-danger btn-sm">X</button>
+					</li>	
+				</script>
+				<div class="ingredientEntries">
+					<%if !defined?(recipe_info)%>
+					<% @num_rows.times do%>
+					<%= render partial: 'welcome/ingredient_form', locals: {ingredient: {}}%>
+					<%end%>
+					<%else%>
+					<% recipe_info[:ingredients].each do |ingredient| %>
+					<%= render partial: 'welcome/ingredient_form', locals: {ingredient: ingredient} %>
+					<% end %>
+					<%end%>
+				</div>
+
+				<div class="ingredientsOptions">
+					<%= text_field_tag "recipe[name]", (recipe_info[:name] if defined?(recipe_info)), class: "recipeName click-refresh", placeholder: "Recipe Name", required: 'true'%>
+					<%= radio_button_tag "recipe[method]", "stirred", (recipe_info[:method] == 'stirred' if defined?(recipe_info)), class: "radio-inline click-refresh stirred-radio" %>
+					<%= label_tag "stirred", "Stirred" %>
+					<%= radio_button_tag "recipe[method]", "shaken", (recipe_info[:method] == 'shaken' if defined?(recipe_info)), class: "radio-inline click-refresh shaken-radio" %>
+					<%= label_tag "shaken", "Shaken" %>
+					<%= radio_button_tag "recipe[method]", "built", (recipe_info[:method] == 'built' if defined?(recipe_info)), class: "radio-inline click-refresh built-radio" %>
+					<%= label_tag "built", "Built" %>
+					<%= check_box_tag "recipe[autoDilute]", true, false, class: "click-refresh dilute-check", checked: (recipe_info[:dilute] == true if defined?(recipe_info)) %>
+					<%= label_tag "autoDilute", "AutoDilute" %>
+					<div class="recipeButtons">
+						<button class="btn btn-success" id="addIngredientButton">New Row</button>
+						<%if user_signed_in?%>
+						<button id="save-button" class='btn-primary btn'>Save Recipe</button>
 						<%end%>
 					</div>
-
-					<div class="ingredientsOptions">
-						<%= text_field_tag "recipe[name]", (recipe_info[:name] if defined?(recipe_info)), class: "recipeName click-refresh", placeholder: "Recipe Name", required: 'true'%>
-						<%= radio_button_tag "recipe[method]", "stirred", (recipe_info[:method] == 'stirred' if defined?(recipe_info)), class: "radio-inline click-refresh stirred-radio" %>
-						<%= label_tag "stirred", "Stirred" %>
-						<%= radio_button_tag "recipe[method]", "shaken", (recipe_info[:method] == 'shaken' if defined?(recipe_info)), class: "radio-inline click-refresh shaken-radio" %>
-						<%= label_tag "shaken", "Shaken" %>
-						<%= radio_button_tag "recipe[method]", "built", (recipe_info[:method] == 'built' if defined?(recipe_info)), class: "radio-inline click-refresh built-radio" %>
-						<%= label_tag "built", "Built" %>
-						<%= check_box_tag "recipe[autoDilute]", true, false, class: "click-refresh dilute-check", checked: (recipe_info[:dilute] == true if defined?(recipe_info)) %>
-						<%= label_tag "autoDilute", "AutoDilute" %>
-						<div class="recipeButtons">
-							<button class="btn btn-success" id="addIngredientButton">New Row</button>
-							<%if user_signed_in?%>
-								<button id="save-button" class='btn-primary btn'>Save Recipe</button>
-							<%end%>
-						</div>
-						<div class="hidden-inputs">
-							<%= hidden_field_tag 'batch[number]', nil,  class: 'batch-number-hidden'%>
-							<%= hidden_field_tag 'batch[input_unit]', nil, class: 'batch-input-unit-hidden'%>
-							<%= hidden_field_tag 'recipe[output_unit]', 'ml', class: 'recipe-output-unit-hidden'%>
-						</div>
+					<div class="hidden-inputs">
+						<%= hidden_field_tag 'batch[number]', nil,  class: 'batch-number-hidden'%>
+						<%= hidden_field_tag 'batch[input_unit]', nil, class: 'batch-input-unit-hidden'%>
+						<%= hidden_field_tag 'recipe[output_unit]', 'ml', class: 'recipe-output-unit-hidden'%>
 					</div>
+				</div>
+				<h1 class="moduleTitle">Batches</h1>
+				<div class='batch-options'>
+					<%= text_field_tag "batches[number]", nil, class: 'batch-num', placeholder: 'number'%>
+					<%= select_tag "batches[unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
+				</div>
 				<%end%>
 			</div>			
 		</ul>
@@ -64,6 +69,8 @@
 
 	<div id="statsModule" class="col-md-6 border">
 		<h1 class="moduleTitle">Stats</h1>
+		<button class='batch-unit-toggle btn-info btn'>Toggle Units</button>
+
 
 		<table id='statsList' class="table table-reflow">
 			<thead>
@@ -87,24 +94,13 @@
 
 			</tbody>
 		</table>
-	</div>
-	
-	<div id="batchesModule" class="col-md-6 border">
-		<h1 class="moduleTitle">Batches</h1>
-			<button class='batch-unit-toggle btn-info btn'>Toggle Units</button>
-			<div class='batch-options'>
-				<%= text_field_tag "batches[number]", nil, class: 'batch-num', placeholder: 'number'%>
-				<%= select_tag "batches[unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
-			</div>
-			<table class='table table-reflow batch-stats'>
-				<tbody class='batch-stats'>
-					<tr class='batch-stats-headers'></tr>
-					<tr class='batch-stats-values'></tr>
-				</tbody>
-			</table>
-	</div>
-	<div id="recipeModule" class="col-md-6 border">
-		<h1 class="moduleTitle">Recipe</h1>
+		<h1 class="moduleTitle">Batch Recipe</h1>
+		<table class='table table-reflow batch-stats'>
+			<tbody class='batch-stats'>
+				<tr class='batch-stats-headers'></tr>
+				<tr class='batch-stats-values'></tr>
+			</tbody>
+		</table>
 	</div>
 </div>
 

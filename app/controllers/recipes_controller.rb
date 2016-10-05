@@ -71,9 +71,10 @@ class RecipesController < ApplicationController
 		data[:recipe][:initial_abv] = (data[:recipe][:initial_alcohol_volume] / data[:recipe][:initial_volume]).round(4)
 		data[:recipe][:dilution] = dilute(data[:recipe]).round(2)
 		data[:recipe][:final_volume] = (data[:recipe][:dilution] + data[:recipe][:initial_volume]).round(2)
+		data[:recipe][:final_volume_ml] = (data[:recipe][:final_volume] * data[:recipe][:unit_conversion])
 		data[:recipe][:final_abv] = (data[:recipe][:initial_alcohol_volume] / data[:recipe][:final_volume]).round(4)
 
-		data[:batch][:multiplier] = calculate_batch_multiplier(data[:batch], data[:recipe][:final_volume])
+		data[:batch][:multiplier] = calculate_batch_multiplier(data[:batch], data[:recipe][:final_volume_ml])
 		data[:batch][:html] = create_batch_stats_html(data)
 
 		respond_to do |format|
@@ -138,7 +139,12 @@ class RecipesController < ApplicationController
 		headers_html = '<tr>'
 		stats_html = '<tr>'
 		total_volume = 0
+		p '_____________________________________________________________________'
+		p data[:batch]
+		p '!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!'
+		p data[:recipe][:unit_conversion]
 		data[:ingredients].each do |ingredient|
+			p "#{ingredient[:name]}: #{ingredient[:volume_ml]}"
 			if ingredient[:volume] > 0
 				headers_html += "<th>#{ingredient[:name]}</th>"
 				stats_html += "<td>#{(ingredient[:volume_ml] * data[:batch][:multiplier] / data[:recipe][:unit_conversion]).round(2).to_s} #{data[:recipe][:output_unit]}</td>"
@@ -147,9 +153,11 @@ class RecipesController < ApplicationController
 		end
 		if data[:recipe][:dilution] > 0
 			headers_html += "<th>Water</th>"
-			stats_html += "<td>#{(data[:recipe][:dilution] * data[:batch][:multiplier] / data[:recipe][:unit_conversion]).round(2).to_s} #{data[:recipe][:output_unit]}</td>"
-			total_volume += (data[:recipe][:dilution] * data[:batch][:multiplier] / data[:recipe][:unit_conversion])
+			stats_html += "<td>#{(data[:recipe][:dilution] * data[:batch][:multiplier] ).round(2).to_s} #{data[:recipe][:output_unit]}</td>"
+			total_volume += (data[:recipe][:dilution] * data[:batch][:multiplier])
 		end
+		headers_html += "<th>Total</th>"
+		stats_html += "<td>#{total_volume.round(2).to_s} #{data[:recipe][:output_unit]}</td>"
 		headers_html += "</tr>"
 		stats_html += "</tr>"
 		batch_html = headers_html + stats_html
@@ -163,9 +171,9 @@ class RecipesController < ApplicationController
 		when "floz"
 			volume_ml = ingredient[:volume] * 29.375
 		when "drop"
-			volume_ml = ingredient[:volume] * 0.8
-		when "dash"
 			volume_ml = ingredient[:volume] * 0.05
+		when "dash"
+			volume_ml = ingredient[:volume] * 0.8
 		else 
 			volume_ml = ingredient[:volume]
 		end
