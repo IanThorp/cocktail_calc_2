@@ -56,6 +56,7 @@ class RecipesController < ApplicationController
 			batch: params[:batch],
 		}
 
+		data[:recipe][:unit_conversion] = calculate_stats_conversion(data)
 		data[:recipe][:initial_volume] = 0
 		data[:recipe][:initial_alcohol_volume] = 0
 
@@ -65,14 +66,14 @@ class RecipesController < ApplicationController
 			data[:recipe][:initial_alcohol_volume] += (ingredient[:volume_ml].to_f * (ingredient[:abv].to_f/100))
 		end
 
-		data[:recipe][:initial_volume] = data[:recipe][:initial_volume].round(2)
-		data[:recipe][:initial_alcohol_volume] = data[:recipe][:initial_alcohol_volume].round(2)
-		data[:recipe][:initial_abv] = (data[:recipe][:initial_alcohol_volume]/data[:recipe][:initial_volume]).round(4)
+		data[:recipe][:initial_volume] = (data[:recipe][:initial_volume] / data[:recipe][:unit_conversion]).round(2)
+		data[:recipe][:initial_alcohol_volume] = (data[:recipe][:initial_alcohol_volume]/ data[:recipe][:unit_conversion]).round(2)
+		data[:recipe][:initial_abv] = (data[:recipe][:initial_alcohol_volume] / data[:recipe][:initial_volume]).round(4)
 		data[:recipe][:dilution] = dilute(data[:recipe]).round(2)
 		data[:recipe][:final_volume] = (data[:recipe][:dilution] + data[:recipe][:initial_volume]).round(2)
-		data[:recipe][:final_abv] = (data[:recipe][:initial_alcohol_volume]/data[:recipe][:final_volume]).round(4)
+		data[:recipe][:final_abv] = (data[:recipe][:initial_alcohol_volume] / data[:recipe][:final_volume]).round(4)
 
-		data[:batch][:multiplier] = calculate_ingredient_multiplier(data[:batch], data[:recipe][:final_volume])
+		data[:batch][:multiplier] = calculate_batch_multiplier(data[:batch], data[:recipe][:final_volume])
 		data[:batch][:html] = create_batch_stats_html(data)
 
 		respond_to do |format|
@@ -109,7 +110,16 @@ class RecipesController < ApplicationController
 		str == 'true'
 	end
 
-	def calculate_ingredient_multiplier(batch, final_volume)
+	def calculate_stats_conversion(data)
+		if data[:recipe][:output_unit] == 'fl oz'
+			unit_conversion = 29.375
+		else
+			unit_conversion = 1
+		end
+		unit_conversion
+	end
+
+	def calculate_batch_multiplier(batch, final_volume)
 		batch[:number] = batch[:number].to_f
 		multiplier = 1
 		case batch[:input_unit]
@@ -125,28 +135,20 @@ class RecipesController < ApplicationController
 	end
 
 	def create_batch_stats_html(data)
-		# batch_html = ''
 		headers_html = '<tr>'
 		stats_html = '<tr>'
 		total_volume = 0
-		if data[:batch][:output_unit] == 'floz'
-			unit_conversion = 29.375
-			unit_text = 'fl oz'
-		else
-			unit_conversion = 1
-			unit_text = 'mL'
-		end
 		data[:ingredients].each do |ingredient|
 			if ingredient[:volume] > 0
 				headers_html += "<th>#{ingredient[:name]}</th>"
-				stats_html += "<td>#{(ingredient[:volume_ml] * data[:batch][:multiplier] / unit_conversion).round(2).to_s} #{unit_text}</td>"
-				total_volume += (ingredient[:volume_ml] * data[:batch][:multiplier] / unit_conversion)
+				stats_html += "<td>#{(ingredient[:volume_ml] * data[:batch][:multiplier] / data[:recipe][:unit_conversion]).round(2).to_s} #{data[:recipe][:output_unit]}</td>"
+				total_volume += (ingredient[:volume_ml] * data[:batch][:multiplier] / data[:recipe][:unit_conversion])
 			end
 		end
 		if data[:recipe][:dilution] > 0
 			headers_html += "<th>Water</th>"
-			stats_html += "<td>#{(data[:recipe][:dilution] * data[:batch][:multiplier] / unit_conversion).round(2).to_s} #{unit_text}</td>"
-			total_volume += (data[:recipe][:dilution] * data[:batch][:multiplier] / unit_conversion)
+			stats_html += "<td>#{(data[:recipe][:dilution] * data[:batch][:multiplier] / data[:recipe][:unit_conversion]).round(2).to_s} #{data[:recipe][:output_unit]}</td>"
+			total_volume += (data[:recipe][:dilution] * data[:batch][:multiplier] / data[:recipe][:unit_conversion])
 		end
 		headers_html += "</tr>"
 		stats_html += "</tr>"
