@@ -1,7 +1,7 @@
 <li>
-	<%= text_field_tag "ingredients[][name]", nil, class: 'name-col'%>
-	<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col'%>
-	<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col'%>
-	<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
+	<%= text_field_tag "ingredients[][name]", nil, class: 'name-col', required: 'true', pattern: '.+', title: 'Please enter ingredient name.', value: ingredient[:name]%>
+	<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100', value: ingredient[:abv]%>
+	<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number', value: ingredient[:volume]%>
+	<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']], ingredient[:unit]), class: 'unit-col'%>
 	<button class="deleteIngredientButton delete-col btn btn-danger btn-sm">X</button>
 </li>

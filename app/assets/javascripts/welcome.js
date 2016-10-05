@@ -1,6 +1,6 @@
 var ingredientModule = (function($) {
 
-	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $ingredientOptions, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, $hiddenBatchOutputUnit
+	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $clickRefresh, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, $hiddenRecipeOutputUnit, $saveButton
 
 	function init(){
 		cacheDom();
@@ -12,37 +12,44 @@ var ingredientModule = (function($) {
 		$recipeForm = $ul.find('.new_recipe');
 		$ingredientEntries = $ul.find('.ingredientEntries');
 		$addIngredientButton = $ul.find('#addIngredientButton');
-		$ingredientOptions = $ul.find('.ingredientsOptions');
+		$clickRefresh = $ul.find('.click-refresh');
 		$batchOptions = $('.batch-options');
 		$hiddenBatchNum = $recipeForm.find('.batch-number-hidden');
 		$hiddenBatchInputUnit = $recipeForm.find('.batch-input-unit-hidden');
-		$hiddenBatchOutputUnit = $recipeForm.find('.batch-output-unit-hidden');
+		$hiddenRecipeOutputUnit = $recipeForm.find('.recipe-output-unit-hidden');
+		$saveButton = $ul.find('#save-button');
 		ingredientTemplate = $ul.find('#ingredient-template').html();
 	}
 
 	function bindEvents() {
-		$recipeForm.on('focusout', function() {
-			addBatchInfo();
-			$recipeForm.submit();
-		})
-		$ingredientOptions.on('click', function() {
-			addBatchInfo();
-			$recipeForm.submit();
-		})
-		$batchOptions.on('focusout', function() {
-			addBatchInfo();
-			$recipeForm.submit();
-		})
+		$recipeForm.on('focusout', recalculate);
+		$clickRefresh.on('click', recalculate);
+		$batchOptions.on('focusout', recalculate)
 		$('.batch-unit-toggle').on('click', batchToggleButton);
 		$addIngredientButton.on('click', addIngredientRow);
+		$saveButton.on('click', saveRecipe)
 		$recipeForm.on('ajax:success', submitRecipe);
 		$recipeForm.on('ajax:error', ajaxError);
 		$ul.delegate('.deleteIngredientButton', 'click', deleteIngredient);
 	}
 
+	function saveRecipe(e, data) {
+		addBatchInfo();
+		$recipeForm.attr('action', '/recipes/save')
+		.submit()
+		.attr('action', '/recipes/calculate')
+	}
+
 	function submitRecipe(e, data) {
-		displayBatchStats(data)
-		statsModule.displayStats(data.recipe);
+		if (typeof data.batch != 'undefined') {
+			displayBatchStats(data)
+			statsModule.displayStats(data.recipe);
+		} else {
+			if (data.success === true) {
+				var recipeName = data.data.recipe.name;
+				$('#alert-messages').append('<div class="alert alert-success fade in"><a href="#" class="close" data-dismiss="alert">&times;</a><strong>' + recipeName + '</strong> recipe has been saved.</div>')
+			}
+		}
 	}
 
 	function ajaxError(error) {
@@ -59,7 +66,7 @@ var ingredientModule = (function($) {
 	function deleteIngredient(e) {
 		if (typeof e === "object"){
 			var $remove = $(e.target).closest('li');
-		}// var i = this.$ul.find('li').index($remove);
+		}
 		else if (typeof e === "number"){
 			var $remove = $ul.find('.ingredientEntries').get(e)
 		} else {
@@ -78,10 +85,10 @@ var ingredientModule = (function($) {
 	}
 
 	function batchToggleButton() {
-		if($hiddenBatchOutputUnit.val() === 'ml') {
-			$hiddenBatchOutputUnit.val('floz');
+		if($hiddenRecipeOutputUnit.val() === 'ml') {
+			$hiddenRecipeOutputUnit.val('fl oz');
 		} else {
-			$hiddenBatchOutputUnit.val('ml');
+			$hiddenRecipeOutputUnit.val('ml');
 		}
 		$recipeForm.submit();
 	}
@@ -90,7 +97,14 @@ var ingredientModule = (function($) {
 		$('.batch-stats').html(data.batch.html);
 	}
 
-	$(function() {
+	function recalculate() {
+		addBatchInfo();
+		$recipeForm.attr('novalidate', true)
+		.submit()
+		.removeAttr('novalidate')
+	}
+
+	$(document).on('page:change', function() {
 		init()
 	});
 
@@ -119,15 +133,15 @@ var statsModule = (function($){
 
 
 	function displayStats(recipe){
-		$statsList.find('.statsInitAbv.stats-value').text(Math.round(recipe.initial_abv * 10000) / 100);
-		$statsList.find('.statsInitVolume.stats-value').text(recipe.initial_volume);
-		$statsList.find('.statsDilution.stats-value').text(recipe.dilution);
-		$statsList.find('.statsFinalAbv.stats-value').text(Math.round(recipe.final_abv * 10000) / 100);
-		$statsList.find('.statsFinalVolume.stats-value').text(recipe.final_volume);		
+		$statsList.find('.statsInitAbv.stats-value').text((Math.round(recipe.initial_abv * 10000) / 100) + " %");
+		$statsList.find('.statsInitVolume.stats-value').text((recipe.initial_volume) + " " + recipe.output_unit);
+		$statsList.find('.statsDilution.stats-value').text((recipe.dilution) + " " + recipe.output_unit) ;
+		$statsList.find('.statsFinalAbv.stats-value').text((Math.round(recipe.final_abv * 10000) / 100) + " %");
+		$statsList.find('.statsFinalVolume.stats-value').text((recipe.final_volume) + " " + recipe.output_unit);
 	}
 
 
-	$(function(){
+	$(document).on('page:change', function() {
 		init();
 	});
 

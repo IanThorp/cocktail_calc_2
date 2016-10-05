@@ -78,19 +78,15 @@ body {
 	justify-content: center;
 }
 
-
-.batch-stats {
-	list-style: none;
-	padding: 0;
+#batchesModule {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-#batchesModule {
+.batch-stats {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	justify-content: center;	
 }
 
 .batch-unit-toggle {

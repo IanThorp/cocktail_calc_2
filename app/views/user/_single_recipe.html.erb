@@ -1,0 +1,15 @@
+<div class='col-md-8 single-recipe border'>
+	<h2><%= link_to recipe.name, recipe_path(id: recipe.id), class: 'recipe-link' %></h2>
+	<ul class='list-group'>
+	<% recipe.ingredients.each do |ingredient|%>
+		<%ingredients_recipe = recipe.ingredients_recipes.find_by(ingredient_id: ingredient.id)%>
+		<li class='list-group-item'><%=ingredient.name%> 
+		<%=ingredients_recipe.volume%>
+		<%=ingredients_recipe.unit%>
+		</li>
+	<%end%>
+	</ul>
+	<%if current_user == user%>
+		<%= button_to 'Delete', "/recipes/#{recipe.id}", method: :delete, remote: true, data: {confirm: 'Are you sure'}, class: 'btn btn-xs btn-danger delete-recipe'%>
+	<%end%>
+</div>
