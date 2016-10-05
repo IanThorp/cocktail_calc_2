@@ -1,4 +1,7 @@
-<h1><%= current_user.email%></h1>
+<h1><%=@user.email%></h1>
+<%if @recipes.length == 0%>
+	<h3>This user has no saved recipes</h3>
+<%end%>
 <% @recipes.each do |recipe|%>
-	<%= render partial: 'single_recipe', locals: {recipe: recipe}%>
+	<%= render partial: 'single_recipe', locals: {recipe: recipe, user: @user}%>
 <% end %>

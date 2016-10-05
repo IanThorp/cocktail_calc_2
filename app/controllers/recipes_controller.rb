@@ -36,6 +36,19 @@ class RecipesController < ApplicationController
 		}
 	end
 
+	def destroy
+		@recipe = Recipe.find(params[:id])
+		if @recipe.user_id == current_user.id
+			@recipe.ingredients_recipes.each do |ingredient_recipe|
+				ingredient_recipe.destroy
+			end
+			@recipe.destroy
+			render json: {}, status: :no_content
+		else
+			render json: {}, status: 401
+		end
+	end
+
 	def calculate
 		data = { 
 			recipe: params[:recipe], 
