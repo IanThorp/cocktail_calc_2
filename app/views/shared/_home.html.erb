@@ -3,25 +3,24 @@
 	</div>
 	<div id="ingredientModule" class="col-md-6 border">
 		<h2 class="moduleTitle">Ingredients</h2>
-		<ul id="ingredients">
-			<li class=ingredientsHeader>
-				<h3 class="name-col">Name</h3>
-				<h3 class="abv-col">ABV</h3>
-				<h3 class="volume-col">Volume</h3>
-				<h3 class="unit-col">Unit</h3>
-			</li>
+		<table id="ingredients" class="table">
+			<tr class=ingredientsHeader>
+				<th class="name-col">Name</th>
+				<th class="abv-col">ABV</th>
+				<th class="volume-col">Volume</th>
+				<th class="unit-col">Unit</th>
+			</tr>
 
-			
 			<%= form_tag "/recipes/calculate", class:"new_recipe", remote: true, method: 'GET' do%>
 			<div class="additionalIngredients">
 				<script id="ingredient-template" type="text/template">
-					<li>
-						<%= text_field_tag "ingredients[][name]", nil, class: 'name-col', required: 'true' , pattern: '.+', title: 'Please enter ingredient name.'%>
-						<%= text_field_tag "ingredients[][abv]", nil, class: 'abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100'%>
-						<%= text_field_tag "ingredients[][volume]", nil, class: 'volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number'%>
-						<%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'unit-col'%>
+					<tr>
+						<td ><%= text_field_tag "ingredients[][name]", nil, class: 'ingredient-field name-col', required: 'true' , pattern: '.+', title: 'Please enter ingredient name.'%></td>
+						<td ><%= text_field_tag "ingredients[][abv]", nil, class: 'ingredient-field abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100'%></td>
+						<td ><%= text_field_tag "ingredients[][volume]", nil, class: 'ingredient-field volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number'%></td>
+						<td ><%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'ingredient-field unit-col'%></td>
 						<button class="deleteIngredientButton btn btn-danger btn-sm">X</button>
-					</li>	
+					</tr>	
 				</script>
 				<div class="ingredientEntries">
 					<%if !defined?(recipe_info)%>
@@ -64,7 +63,7 @@
 				</div>
 				<%end%>
 			</div>			
-		</ul>
+		</table>
 	</div>
 
 	<div id="statsModule" class="col-md-6 border">

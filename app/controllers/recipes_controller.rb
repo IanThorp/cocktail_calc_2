@@ -75,7 +75,9 @@ class RecipesController < ApplicationController
 		data[:recipe][:final_abv] = (data[:recipe][:initial_alcohol_volume] / data[:recipe][:final_volume]).round(4)
 
 		data[:batch][:multiplier] = calculate_batch_multiplier(data[:batch], data[:recipe][:final_volume_ml])
-		data[:batch][:html] = create_batch_stats_html(data)
+		if data[:batch][:multiplier] > 0
+			data[:batch][:html] = create_batch_stats_html(data)
+		end
 
 		respond_to do |format|
 			format.json {render json: data}
@@ -139,10 +141,6 @@ class RecipesController < ApplicationController
 		headers_html = '<tr>'
 		stats_html = '<tr>'
 		total_volume = 0
-		p '_____________________________________________________________________'
-		p data[:batch]
-		p '!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!_!'
-		p data[:recipe][:unit_conversion]
 		data[:ingredients].each do |ingredient|
 			p "#{ingredient[:name]}: #{ingredient[:volume_ml]}"
 			if ingredient[:volume] > 0
