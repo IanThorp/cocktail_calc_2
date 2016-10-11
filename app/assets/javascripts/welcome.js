@@ -59,12 +59,12 @@ var ingredientModule = (function($) {
 		if (typeof e === "object"){
 			e.preventDefault();
 		}
-		$ingredientEntries.append(ingredientTemplate);
+		$('#ingredients-table').append(ingredientTemplate);
 	}
 
 	function deleteIngredient(e) {
 		if (typeof e === "object"){
-			var $remove = $(e.target).closest('li');
+			var $remove = $(e.target).closest('tr');
 		}
 		else if (typeof e === "number"){
 			var $remove = $ul.find('.ingredientEntries').get(e)
@@ -79,6 +79,7 @@ var ingredientModule = (function($) {
 		var batchNum = $batchOptions.find('.batch-num').val();
 		var batchInputUnit = $batchOptions.find('.batch-input-unit').val();
 		// var batchOutputUnit = $batchOptions.find('.batch-output-unit').val();
+		console.log(batchNum, batchInputUnit)
 		$hiddenBatchNum.val(batchNum);
 		$hiddenBatchInputUnit.val(batchInputUnit);
 	}
@@ -132,11 +133,11 @@ var statsModule = (function($){
 	}
 
 	function displayBatchStats(data) {
+		console.log(data.batch);
 		$('.batch-stats').html(data.batch.html);
 	}
 
 	function batchToggleButton() {
-		console.log('')
 		if($('.recipe-output-unit-hidden').val() === 'ml') {
 			$('.recipe-output-unit-hidden').val('fl oz');
 		} else {

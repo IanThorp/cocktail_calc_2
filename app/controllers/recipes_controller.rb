@@ -123,8 +123,11 @@ class RecipesController < ApplicationController
 	end
 
 	def calculate_batch_multiplier(batch, final_volume)
+		p "HERE IT IS RIGHT HERE"
 		batch[:number] = batch[:number].to_f
 		multiplier = 1
+		p batch[:input_unit]
+		p batch
 		case batch[:input_unit]
 		when "floz"
 			multiplier = batch[:number] * 29.375 / final_volume
@@ -134,6 +137,7 @@ class RecipesController < ApplicationController
 			# batch[:input_unit] must be 'drinks' at this point
 			multiplier = batch[:number]
 		end
+		p multiplier
 		multiplier
 	end
 

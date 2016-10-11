@@ -3,7 +3,7 @@
 	</div>
 	<div id="ingredientModule" class="col-md-6 border">
 		<h2 class="moduleTitle">Ingredients</h2>
-		<table id="ingredients" class="table">
+		<table id="ingredients-table" class="table">
 			<tr class=ingredientsHeader>
 				<th class="name-col">Name</th>
 				<th class="abv-col">ABV</th>
@@ -19,7 +19,7 @@
 						<td ><%= text_field_tag "ingredients[][abv]", nil, class: 'ingredient-field abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100'%></td>
 						<td ><%= text_field_tag "ingredients[][volume]", nil, class: 'ingredient-field volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number'%></td>
 						<td ><%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'ingredient-field unit-col'%></td>
-						<button class="deleteIngredientButton btn btn-danger btn-sm">X</button>
+						<td><button class="deleteIngredientButton btn btn-danger btn-sm">X</button></td>
 					</tr>	
 				</script>
 				<div class="ingredientEntries">
@@ -51,15 +51,15 @@
 						<%end%>
 					</div>
 					<div class="hidden-inputs">
-						<%= hidden_field_tag 'batch[number]', nil,  class: 'batch-number-hidden'%>
-						<%= hidden_field_tag 'batch[input_unit]', nil, class: 'batch-input-unit-hidden'%>
+						<% #hidden_field_tag 'batch[number]', nil,  class: 'batch-number-hidden'%>
+						<% #hidden_field_tag 'batch[input_unit]', nil, class: 'batch-input-unit-hidden'%>
 						<%= hidden_field_tag 'recipe[output_unit]', 'ml', class: 'recipe-output-unit-hidden'%>
 					</div>
 				</div>
 				<h1 class="moduleTitle">Batches</h1>
 				<div class='batch-options'>
-					<%= text_field_tag "batches[number]", nil, class: 'batch-num', placeholder: 'number'%>
-					<%= select_tag "batches[unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
+					<%= text_field_tag "batch[number]", nil, class: 'batch-num', placeholder: 'number'%>
+					<%= select_tag "batch[input_unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
 				</div>
 				<%end%>
 			</div>			
