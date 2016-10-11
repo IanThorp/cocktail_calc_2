@@ -1,6 +1,6 @@
 var ingredientModule = (function($) {
 
-	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $clickRefresh, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, $hiddenRecipeOutputUnit, $saveButton
+	var $ul ,$recipeForm ,$ingredientEntries ,$addIngredientButton ,ingredientTemplate, $clickRefresh, $batchOptions, $hiddenBatchNum, $hiddenBatchInputUnit, hiddenRecipeOutputUnit, $saveButton
 
 	function init(){
 		cacheDom();
@@ -16,8 +16,8 @@ var ingredientModule = (function($) {
 		$batchOptions = $('.batch-options');
 		$hiddenBatchNum = $recipeForm.find('.batch-number-hidden');
 		$hiddenBatchInputUnit = $recipeForm.find('.batch-input-unit-hidden');
-		$hiddenRecipeOutputUnit = $recipeForm.find('.recipe-output-unit-hidden');
 		$saveButton = $ul.find('#save-button');
+		ingredientModule.hiddenRecipeOutputUnit = $recipeForm.find('.recipe-output-unit-hidden').val();
 		ingredientTemplate = $ul.find('#ingredient-template').html();
 	}
 
@@ -25,7 +25,6 @@ var ingredientModule = (function($) {
 		$recipeForm.on('focusout', recalculate);
 		$clickRefresh.on('click', recalculate);
 		$batchOptions.on('focusout', recalculate)
-		$('.batch-unit-toggle').on('click', batchToggleButton);
 		$addIngredientButton.on('click', addIngredientRow);
 		$saveButton.on('click', saveRecipe)
 		$recipeForm.on('ajax:success', submitRecipe);
@@ -42,7 +41,7 @@ var ingredientModule = (function($) {
 
 	function submitRecipe(e, data) {
 		if (typeof data.batch != 'undefined') {
-			displayBatchStats(data)
+			statsModule.displayBatchStats(data);
 			statsModule.displayStats(data.recipe);
 		} else {
 			if (data.success === true) {
@@ -60,12 +59,12 @@ var ingredientModule = (function($) {
 		if (typeof e === "object"){
 			e.preventDefault();
 		}
-		$ingredientEntries.append(ingredientTemplate);
+		$('#ingredients-table').append(ingredientTemplate);
 	}
 
 	function deleteIngredient(e) {
 		if (typeof e === "object"){
-			var $remove = $(e.target).closest('li');
+			var $remove = $(e.target).closest('tr');
 		}
 		else if (typeof e === "number"){
 			var $remove = $ul.find('.ingredientEntries').get(e)
@@ -79,23 +78,13 @@ var ingredientModule = (function($) {
 	function addBatchInfo() {
 		var batchNum = $batchOptions.find('.batch-num').val();
 		var batchInputUnit = $batchOptions.find('.batch-input-unit').val();
-		var batchOutputUnit = $batchOptions.find('.batch-output-unit').val();
+		// var batchOutputUnit = $batchOptions.find('.batch-output-unit').val();
+		console.log(batchNum, batchInputUnit)
 		$hiddenBatchNum.val(batchNum);
 		$hiddenBatchInputUnit.val(batchInputUnit);
 	}
 
-	function batchToggleButton() {
-		if($hiddenRecipeOutputUnit.val() === 'ml') {
-			$hiddenRecipeOutputUnit.val('fl oz');
-		} else {
-			$hiddenRecipeOutputUnit.val('ml');
-		}
-		$recipeForm.submit();
-	}
 
-	function displayBatchStats(data) {
-		$('.batch-stats').html(data.batch.html);
-	}
 
 	function recalculate() {
 		addBatchInfo();
@@ -111,7 +100,9 @@ var ingredientModule = (function($) {
 	return {
 		submitRecipe: submitRecipe,
 		addIngredientRow: addIngredientRow,
-		deleteIngredient: deleteIngredient
+		deleteIngredient: deleteIngredient,
+		recalculate: recalculate,
+		// hiddenRecipeOutputUnit: hiddenRecipeOutputUnit
 	}
 
 })(jQuery);
@@ -129,6 +120,7 @@ var statsModule = (function($){
 		$ul = $('#statsModule');
 		$statsList = $ul.find('#statsList');
 		statsTemplate = $statsList.html();
+		$('.batch-unit-toggle').on('click', batchToggleButton);
 	}
 
 
@@ -140,6 +132,20 @@ var statsModule = (function($){
 		$statsList.find('.statsFinalVolume.stats-value').text((recipe.final_volume) + " " + recipe.output_unit);
 	}
 
+	function displayBatchStats(data) {
+		console.log(data.batch);
+		$('.batch-stats').html(data.batch.html);
+	}
+
+	function batchToggleButton() {
+		if($('.recipe-output-unit-hidden').val() === 'ml') {
+			$('.recipe-output-unit-hidden').val('fl oz');
+		} else {
+			$('.recipe-output-unit-hidden').val('ml');
+		}
+		ingredientModule.recalculate();
+	}
+
 
 	$(document).on('page:change', function() {
 		init();
@@ -147,7 +153,8 @@ var statsModule = (function($){
 
 	return {
 		init: init,
-		displayStats: displayStats
+		displayStats: displayStats,
+		displayBatchStats: displayBatchStats,
 	};
 
 })(jQuery);
