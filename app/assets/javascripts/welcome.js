@@ -30,8 +30,17 @@ var ingredientModule = (function($) {
 		$recipeForm.on('ajax:success', submitRecipe);
 		$recipeForm.on('ajax:error', ajaxError);
 		$ul.delegate('.deleteIngredientButton', 'click', deleteIngredient);
+		submitOnEnter();
 	}
 
+	function submitOnEnter() {
+		$ul.keypress(function(e) {
+ 			if (e.which == 13) {
+    		recalculate();
+	    return false;
+		  }
+		});
+	}
 	function saveRecipe(e, data) {
 		addBatchInfo();
 		$recipeForm.attr('action', '/recipes/save')
