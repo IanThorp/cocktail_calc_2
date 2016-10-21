@@ -77,6 +77,8 @@ class RecipesController < ApplicationController
 		data[:batch][:multiplier] = calculate_batch_multiplier(data[:batch], data[:recipe][:final_volume_ml])
 		if data[:batch][:multiplier] > 0
 			data[:batch][:html] = create_batch_stats_html(data)
+		else
+			data[:batch][:html] = ""
 		end
 
 		respond_to do |format|
@@ -123,11 +125,10 @@ class RecipesController < ApplicationController
 	end
 
 	def calculate_batch_multiplier(batch, final_volume)
-		p "HERE IT IS RIGHT HERE"
+		multiplier = 0
 		batch[:number] = batch[:number].to_f
-		multiplier = 1
-		p batch[:input_unit]
-		p batch
+		p batch[:number]
+		p "HERE IT IS!"
 		case batch[:input_unit]
 		when "floz"
 			multiplier = batch[:number] * 29.375 / final_volume
@@ -137,7 +138,6 @@ class RecipesController < ApplicationController
 			# batch[:input_unit] must be 'drinks' at this point
 			multiplier = batch[:number]
 		end
-		p multiplier
 		multiplier
 	end
 
@@ -146,7 +146,6 @@ class RecipesController < ApplicationController
 		stats_html = '<tr>'
 		total_volume = 0
 		data[:ingredients].each do |ingredient|
-			p "#{ingredient[:name]}: #{ingredient[:volume_ml]}"
 			if ingredient[:volume] > 0
 				headers_html += "<th>#{ingredient[:name]}</th>"
 				stats_html += "<td>#{(ingredient[:volume_ml] * data[:batch][:multiplier] / data[:recipe][:unit_conversion]).round(2).to_s} #{data[:recipe][:output_unit]}</td>"
