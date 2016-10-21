@@ -114,6 +114,8 @@ class RecipesController < ApplicationController
 	end
 
 	def calculate_stats_conversion(data)
+		p data, "HERE IT IS"
+		p params, "PARAMS_____________"
 		if data[:recipe][:output_unit] == 'fl oz'
 			unit_conversion = 29.375
 		else
