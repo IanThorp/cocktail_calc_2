@@ -22,7 +22,7 @@ var ingredientModule = (function($) {
 	}
 
 	function bindEvents() {
-		$recipeForm.on('focusout', recalculate);
+		$('#ingredients-table').on('focusout', recalculate);
 		$clickRefresh.on('click', recalculate);
 		$batchOptions.on('focusout', recalculate)
 		$addIngredientButton.on('click', addIngredientRow);
@@ -94,7 +94,9 @@ var ingredientModule = (function($) {
 	}
 
 	$(document).on('page:change', function() {
-		init()
+		console.log("Page Has Changed");
+		init();
+		recalculate();
 	});
 
 	return {
