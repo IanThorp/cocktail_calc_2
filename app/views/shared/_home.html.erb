@@ -32,6 +32,8 @@
 						<% end %>
 						<%end%>
 					</div>
+				</table>					
+					
 
 					<div class="ingredientsOptions">
 						<%= text_field_tag "recipe[name]", (recipe_info[:name] if defined?(recipe_info)), class: "recipeName click-refresh", placeholder: "Recipe Name", required: 'true'%>
@@ -50,18 +52,16 @@
 							<%end%>
 						</div>
 						<div class="hidden-inputs">
-							<% #hidden_field_tag 'batch[number]', nil,  class: 'batch-number-hidden'%>
-							<% #hidden_field_tag 'batch[input_unit]', nil, class: 'batch-input-unit-hidden'%>
 							<%= hidden_field_tag 'recipe[output_unit]', 'ml', class: 'recipe-output-unit-hidden'%>
 						</div>
 					</div>
-					<h1 class="moduleTitle">Batches</h1>
-					<div class='batch-options'>
-						<%= text_field_tag "batch[number]", nil, class: 'batch-num', placeholder: 'number'%>
-						<%= select_tag "batch[input_unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
-					</div>
-				</div>			
-			</table>
+				<h1 class="moduleTitle">Batches</h1>
+				<div class='batch-options'>
+					<%= text_field_tag "batch[number]", nil, class: 'batch-num', placeholder: 'number'%>
+					<%= select_tag "batch[input_unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
+				</div>
+
+			<!-- </table> -->
 		<%end%>
 
 	</div>
