@@ -22,7 +22,7 @@ var ingredientModule = (function($) {
 	}
 
 	function bindEvents() {
-		$recipeForm.on('focusout', recalculate);
+		$('#ingredients-table').on('focusout', recalculate);
 		$clickRefresh.on('click', recalculate);
 		$batchOptions.on('focusout', recalculate)
 		$addIngredientButton.on('click', addIngredientRow);
@@ -30,8 +30,17 @@ var ingredientModule = (function($) {
 		$recipeForm.on('ajax:success', submitRecipe);
 		$recipeForm.on('ajax:error', ajaxError);
 		$ul.delegate('.deleteIngredientButton', 'click', deleteIngredient);
+		submitOnEnter();
 	}
 
+	function submitOnEnter() {
+		$ul.keypress(function(e) {
+ 			if (e.which == 13) {
+    		recalculate();
+	    return false;
+		  }
+		});
+	}
 	function saveRecipe(e, data) {
 		addBatchInfo();
 		$recipeForm.attr('action', '/recipes/save')
@@ -94,7 +103,9 @@ var ingredientModule = (function($) {
 	}
 
 	$(document).on('page:change', function() {
-		init()
+		console.log("Page Has Changed");
+		init();
+		recalculate();
 	});
 
 	return {
