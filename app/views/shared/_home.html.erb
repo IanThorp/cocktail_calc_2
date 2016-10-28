@@ -1,10 +1,17 @@
-<div class="container-fluid info-modules">
-	<div id="alert-messages" class='col-md-6 col-md-offset-3'>
-	</div>
-	<div id="ingredientModule" class="col-md-6 border">
-		<h2 class="moduleTitle">Ingredients</h2>
+<div id="alert-messages" class='col-md-4'>
+</div>
+<div class="title-bar">
+<h1>Cocktail Calculator</h1>
+</div>
+<div class="container-fluid info-modules">	
+	<div id="ingredientModule" class="col-md-5">
+		<h2 class="moduleTitle">Recipe</h2>
 		<%= form_tag "/recipes/calculate", class:"new_recipe", remote: true, method: 'GET' do%>
-			<table id="ingredients-table" class="table">
+			<div class="recipe-name">
+				<%= label_tag "Cocktail Name", "Cocktail Name" ,class: "recipe-name-label"%>
+				<%= text_field_tag "recipe[name]", (recipe_info[:name] if defined?(recipe_info)), class: "recipeName click-refresh", placeholder: "Recipe Name", required: 'true'%>
+			</div>
+			<table id="ingredients-table" class="table table-borderless">
 				<tr class=ingredientsHeader>
 					<th class="name-col">Name</th>
 					<th class="abv-col">ABV</th>
@@ -18,7 +25,7 @@
 							<td ><%= text_field_tag "ingredients[][abv]", nil, class: 'ingredient-field abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100'%></td>
 							<td ><%= text_field_tag "ingredients[][volume]", nil, class: 'ingredient-field volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number'%></td>
 							<td ><%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']]), class: 'ingredient-field unit-col'%></td>
-							<td><button class="deleteIngredientButton btn btn-danger btn-sm">X</button></td>
+							<td><button class="deleteIngredientButton btn round btn-danger btn-sm">X</button></td>
 						</tr>	
 					</script>
 					<div class="ingredientEntries">
@@ -36,19 +43,19 @@
 					
 
 					<div class="ingredientsOptions">
-						<%= text_field_tag "recipe[name]", (recipe_info[:name] if defined?(recipe_info)), class: "recipeName click-refresh", placeholder: "Recipe Name", required: 'true'%>
 						<%= radio_button_tag "recipe[method]", "stirred", (recipe_info[:method] == 'stirred' if defined?(recipe_info)), class: "radio-inline click-refresh stirred-radio" %>
 						<%= label_tag "stirred", "Stirred" %>
 						<%= radio_button_tag "recipe[method]", "shaken", (recipe_info[:method] == 'shaken' if defined?(recipe_info)), class: "radio-inline click-refresh shaken-radio" %>
 						<%= label_tag "shaken", "Shaken" %>
 						<%= radio_button_tag "recipe[method]", "built", (recipe_info[:method] == 'built' if defined?(recipe_info)), class: "radio-inline click-refresh built-radio" %>
 						<%= label_tag "built", "Built" %>
+						<br>
 						<%= check_box_tag "recipe[autoDilute]", true, false, class: "click-refresh dilute-check", checked: (recipe_info[:dilute] == true if defined?(recipe_info)) %>
 						<%= label_tag "autoDilute", "AutoDilute" %>
 						<div class="recipeButtons">
-							<button class="btn btn-success" id="addIngredientButton">New Row</button>
+							<button class="btn btn-success round" id="addIngredientButton">New Row</button>
 							<%if user_signed_in?%>
-							<button id="save-button" class='btn-primary btn'>Save Recipe</button>
+							<button id="save-button" class='btn-primary btn round'>Save Recipe</button>
 							<%end%>
 						</div>
 						<div class="hidden-inputs">
@@ -60,47 +67,47 @@
 					<%= text_field_tag "batch[number]", nil, class: 'batch-num', placeholder: 'number'%>
 					<%= select_tag "batch[input_unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drinks', 'drinks']]), class: 'batch-input-unit'%>
 				</div>
-
-			<!-- </table> -->
 		<%end%>
 
 	</div>
 
-	<div id="statsModule" class="col-md-6 border">
-		<h1 class="moduleTitle">Stats</h1>
-		<button class='batch-unit-toggle btn-info btn'>Toggle Units</button>
+	<div id="statsModule" class="col-md-5">
+		<div class="stats-info">
+			<h1 class="moduleTitle">Stats</h1>
+			<button class='batch-unit-toggle btn-info btn round'>Toggle Units</button>
 
+			<table id='statsList' class="table table-reflow table-borderless">
+				<thead>
+					<tr>
+						<th>Initial ABV</th>
+						<th>Initial Volume</th>
+						<th>Dilution</th>
+						<th>Final ABV</th>
+						<th>Final Volume</th>
+					</tr>
+				</thead>
 
-		<table id='statsList' class="table table-reflow">
-			<thead>
-				<tr>
-					<th>Initial ABV</th>
-					<th>Initial Volume</th>
-					<th>Dilution</th>
-					<th>Final ABV</th>
-					<th>Final Volume</th>
-				</tr>
-			</thead>
+				<tbody>
+					<tr>
+						<td class="stats-value statsInitAbv">0 %</td>
+						<td class="stats-value statsInitVolume">0 mL</td>
+						<td class="stats-value statsDilution">0 mL</td>
+						<td class="stats-value statsFinalAbv">0 %</td>
+						<td class="stats-value statsFinalVolume">0 mL</td>
+					</tr>
 
-			<tbody>
-				<tr>
-					<td class="stats-value statsInitAbv">0 %</td>
-					<td class="stats-value statsInitVolume">0 mL</td>
-					<td class="stats-value statsDilution">0 mL</td>
-					<td class="stats-value statsFinalAbv">0 %</td>
-					<td class="stats-value statsFinalVolume">0 mL</td>
-				</tr>
-
-			</tbody>
-		</table>
-		<h1 class="moduleTitle">Batch Recipe</h1>
-		<table class='table table-reflow batch-stats'>
-			<tbody class='batch-stats'>
-				<tr class='batch-stats-headers'></tr>
-				<tr class='batch-stats-values'></tr>
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
+		<div class="batch-info">
+			<h1 class="moduleTitle">Batch Recipe</h1>
+			<table class='table table-reflow batch-stats table-borderless'>
+				<tbody class='batch-stats'>
+					<tr class='batch-stats-headers'></tr>
+					<tr class='batch-stats-values'></tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
-
 

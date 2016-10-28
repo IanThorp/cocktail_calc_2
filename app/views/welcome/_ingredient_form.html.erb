@@ -3,5 +3,5 @@
 	<td><%= text_field_tag "ingredients[][abv]", nil, class: 'ingredient-field abv-col', required: 'true', pattern: '(\d{0,2}(\.\d{0,3})?|100)', title: 'Must be a number between 0 and 100', value: ingredient[:abv]%></td>
 	<td><%= text_field_tag "ingredients[][volume]", nil, class: 'ingredient-field volume-col', required: 'true', pattern: '\d*(\.\d{0,3})?', title: 'Must be a number', value: ingredient[:volume]%></td>
 	<td><%= select_tag "ingredients[][unit]", options_for_select([['fl oz', 'floz'], ['ml', 'ml'], ['drop', 'drop'], ['dash', 'dash']], ingredient[:unit]), class: 'ingredient-field unit-col'%></td>
-	<td><button class="deleteIngredientButton delete-col btn btn-danger btn-sm">X</button></td>
+	<td><button class="deleteIngredientButton delete-col btn btn-danger btn-sm round">X</button></td>
 </tr>
