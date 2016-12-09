@@ -2,6 +2,9 @@
 The reason for this release is to completely redo the Cocktail Calculator App.
 The old version has so much spaghetti code that it was worth it to just restart from scratch. 
 
+##Hosted
+ http://cocktailcalc.herokuapp.com/
+
 ##Summary
 This web app will allow you to enter a single cocktail recipe, and number of batches.
 You will than be given the proportions necessary to create batches of the desired quantity.
